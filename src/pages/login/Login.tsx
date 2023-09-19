@@ -9,7 +9,8 @@ import {
 } from "@ant-design/pro-components";
 import { Divider, message } from "antd";
 import { useMutation } from "@apollo/client";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useTitle } from "@/hooks";
 import styles from "./Login.module.less";
 import { SEND_VERIFICATION_CODE, LOGIN } from "../../graphql/auth";
 import { AUTH_TOKEN } from '../../utils/constants';
@@ -25,21 +26,27 @@ const Login: React.FC = () => {
   const [sendVerificationCode] = useMutation(SEND_VERIFICATION_CODE);
   const [loginMutation] = useMutation(LOGIN);
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  useTitle("登录");
 
   const login = async (values: IValue) => {
-    console.log(values);
     const res = await loginMutation({
       variables: {
         tel: values.tel,
         smsCode: values.smsCode,
       },
     });
-    console.log(res);
     if (res.data?.login?.code === 200) {
-      localStorage.setItem(AUTH_TOKEN, res.data?.login?.data || "");
-      message.success("登录成功！", 1, () => {
-        navigate('/');
-      });
+      if (values.autoLogin) {
+        sessionStorage.setItem(AUTH_TOKEN, '');
+        localStorage.setItem(AUTH_TOKEN, res.data?.login?.data || "");
+      } else {
+        sessionStorage.setItem(AUTH_TOKEN, res.data?.login?.data || "");
+        localStorage.setItem(AUTH_TOKEN, '');
+      }
+      
+      message.success("登录成功！");
+      navigate(params.get("redirect") || "/");
     } else {
       message.error(`登录失败！${res.data?.login?.message}`);
     }
@@ -60,6 +67,7 @@ const Login: React.FC = () => {
             }}
             name="tel"
             placeholder="手机号"
+            initialValue="13385401630"
             rules={[
               {
                 required: true,

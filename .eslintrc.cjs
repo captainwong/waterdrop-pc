@@ -11,7 +11,7 @@ module.exports = {
     'eslint-config-airbnb-typescript',
     'prettier',
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
+  ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.ts'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: './tsconfig.json',
@@ -26,5 +26,16 @@ module.exports = {
     'react/react-in-jsx-scope': 0,
     'import/prefer-default-export': 0,
     'react-hooks/exhaustive-deps': 1,
+  },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+    'import/resolver': {
+      alias: {
+        map: [['@', './src']],
+        extensions: ['.ts', '.tsx', ],
+      },
+    },
   },
 }
