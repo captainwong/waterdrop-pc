@@ -16,24 +16,28 @@ export const useGetUserInfo = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { loading } = useQuery<{getUserInfo: IUser}>(GET_USER_INFO, {
+  const { loading, refetch } = useQuery<{getUserInfo: IUser}>(GET_USER_INFO, {
     onCompleted: (data) => {
       if (data.getUserInfo) {
         const {id, name, tel} = data.getUserInfo;
-        setStore({ id, name, tel });
+        setStore({ id, name, tel, });
         if (location.pathname.startsWith("/login"))
           navigate("/");
         return;
-      } 
+      }
       
-      if (!location.pathname.startsWith("/login"))
+      setStore({ refetchHandler: refetch });
+      if (!location.pathname.startsWith("/login")) {
         navigate(`/login?redirect=${location.pathname}`);
+      }
     },
     onError: () => {
-      if (!location.pathname.startsWith("/login"))
-        navigate(`/login?redirect=${location.pathname}`);      
+      setStore({ refetchHandler: refetch });
+      if (!location.pathname.startsWith("/login")) {
+        navigate(`/login?redirect=${location.pathname}`);
+      }
     }
   });
 
-  return { loading };
+  return { loading, refetch };
 };

@@ -11,9 +11,10 @@ import { Divider, message } from "antd";
 import { useMutation } from "@apollo/client";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useTitle } from "@/hooks";
-import styles from "./Login.module.less";
+import { useUserInfoContext } from "@/hooks/userHooks";
 import { SEND_VERIFICATION_CODE, LOGIN } from "../../graphql/auth";
 import { AUTH_TOKEN } from '../../utils/constants';
+import styles from "./Login.module.less";
 // import logo from '../../assets/henglogo@2x.png'
 
 interface IValue {
@@ -28,6 +29,7 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   useTitle("登录");
+  const { store }  = useUserInfoContext();
 
   const login = async (values: IValue) => {
     const res = await loginMutation({
@@ -37,6 +39,7 @@ const Login: React.FC = () => {
       },
     });
     if (res.data?.login?.code === 200) {
+      store.refetchHandler?.();
       if (values.autoLogin) {
         sessionStorage.setItem(AUTH_TOKEN, '');
         localStorage.setItem(AUTH_TOKEN, res.data?.login?.data || "");
