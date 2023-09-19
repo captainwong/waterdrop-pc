@@ -34,10 +34,10 @@ const Login: React.FC = () => {
       },
     });
     console.log(res);
-    if (res.data?.login) {
+    if (res.data?.login?.code === 200) {
       message.success("登录成功！");
     } else {
-      message.error("登录失败！");
+      message.error(`登录失败！${res.data?.login?.message}`);
     }
   };
 
@@ -96,10 +96,10 @@ const Login: React.FC = () => {
                   tel: phone,
                 },
               });
-              if (res.data?.sendVerificationCode) {
+              if (res.data?.sendVerificationCode?.code === 200 || res.data?.sendVerificationCode?.code === 10001) {
                 message.success("获取验证码成功！");
               } else {
-                message.error("获取验证码失败！");
+                message.error(`获取验证码失败！${res.data?.sendVerificationCode?.message}`);
               }
             }}
           />
