@@ -14,6 +14,7 @@ mutation login($tel: String!, $smsCode: String!){
   login(tel: $tel, smsCode: $smsCode){
     code
     message
+    data
   }
 }
 `;

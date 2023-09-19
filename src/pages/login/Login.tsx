@@ -1,8 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import {
-  LockOutlined,
-  MobileOutlined,
-} from "@ant-design/icons";
+import { LockOutlined, MobileOutlined } from "@ant-design/icons";
 import {
   LoginForm,
   ProConfigProvider,
@@ -12,18 +9,22 @@ import {
 } from "@ant-design/pro-components";
 import { Divider, message } from "antd";
 import { useMutation } from "@apollo/client";
+import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.less";
 import { SEND_VERIFICATION_CODE, LOGIN } from "../../graphql/auth";
+import { AUTH_TOKEN } from '../../utils/constants';
 // import logo from '../../assets/henglogo@2x.png'
 
 interface IValue {
   tel: string;
   smsCode: string;
+  autoLogin: boolean;
 }
 
 const Login: React.FC = () => {
   const [sendVerificationCode] = useMutation(SEND_VERIFICATION_CODE);
   const [loginMutation] = useMutation(LOGIN);
+  const navigate = useNavigate();
 
   const login = async (values: IValue) => {
     console.log(values);
@@ -35,7 +36,10 @@ const Login: React.FC = () => {
     });
     console.log(res);
     if (res.data?.login?.code === 200) {
-      message.success("登录成功！");
+      localStorage.setItem(AUTH_TOKEN, res.data?.login?.data || "");
+      message.success("登录成功！", 1, () => {
+        navigate('/');
+      });
     } else {
       message.error(`登录失败！${res.data?.login?.message}`);
     }
@@ -45,7 +49,7 @@ const Login: React.FC = () => {
     <ProConfigProvider hashed={false}>
       <div className={styles.container}>
         <LoginForm
-          logo='http://water-drop-assets.oss-cn-hangzhou.aliyuncs.com/images/henglogo.png'
+          logo="http://water-drop-assets.oss-cn-hangzhou.aliyuncs.com/images/henglogo.png"
           onFinish={login}
         >
           <Divider />
@@ -96,10 +100,15 @@ const Login: React.FC = () => {
                   tel: phone,
                 },
               });
-              if (res.data?.sendVerificationCode?.code === 200 || res.data?.sendVerificationCode?.code === 10001) {
+              if (
+                res.data?.sendVerificationCode?.code === 200 ||
+                res.data?.sendVerificationCode?.code === 10001
+              ) {
                 message.success("获取验证码成功！");
               } else {
-                message.error(`获取验证码失败！${res.data?.sendVerificationCode?.message}`);
+                message.error(
+                  `获取验证码失败！${res.data?.sendVerificationCode?.message}`
+                );
               }
             }}
           />
@@ -123,7 +132,7 @@ const Login: React.FC = () => {
         </LoginForm>
       </div>
     </ProConfigProvider>
-  )
+  );
 };
 
 export default Login;
