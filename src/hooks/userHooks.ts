@@ -7,7 +7,7 @@ import { IUser } from "../utils/types";
 const USER_INFO = "USER_INFO";
 const DEFAULT_USER_VALUE = {};
 
-export const useUserInfoContext = () => useAppContext(USER_INFO);
+export const useUserInfoContext = () => useAppContext<IUser>(USER_INFO);
 
 export const connect = connectFactory(USER_INFO, DEFAULT_USER_VALUE);
 
@@ -19,8 +19,8 @@ export const useGetUserInfo = () => {
   const { loading, refetch } = useQuery<{getUserInfo: IUser}>(GET_USER_INFO, {
     onCompleted: (data) => {
       if (data.getUserInfo) {
-        const {id, name, tel} = data.getUserInfo;
-        setStore({ id, name, tel, });
+        const {id, name, desc, tel, avatar } = data.getUserInfo;
+        setStore({ id, name, desc, tel, avatar, refetchHandler: refetch });
         if (location.pathname.startsWith("/login"))
           navigate("/");
         return;

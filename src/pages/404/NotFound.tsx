@@ -1,7 +1,6 @@
 import { Button, Result } from "antd";
-import React from "react";
 
-export const NotFound: React.FC = () => (
+export const NotFound = () => (
   <Result
     status="404"
     title="404"

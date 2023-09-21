@@ -1,29 +1,27 @@
 import { useUserInfoContext } from '@/hooks/userHooks';
 import {
   MenuDataItem,
-  PageContainer,
   ProLayout,
 } from '@ant-design/pro-components';
 import { Dropdown } from 'antd';
-import { LogoutOutlined } from '@ant-design/icons';
+import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Link, useNavigate, useOutlet } from 'react-router-dom';
-import ROUTES from '@/routes';
+import { ROUTES, ROUTE_KEYS } from '@/routes/menu';
 import { AUTH_TOKEN } from '@/utils/constants';
+import { useGoTo } from '@/hooks';
 import logo from '../../assets/henglogo@2x.png';
 
 const menuItemRender = (item: MenuDataItem, dom: React.ReactNode) => (
   <Link to={item.path || '/'}>{dom}</Link>
 );
 
-export const MainLayout: React.FC = () => {
+export const MainLayout = () => {
   const outlet = useOutlet();
   const { store } = useUserInfoContext();
   const navigate = useNavigate();
-
-  console.log(store);
+  const { go } = useGoTo();
 
   const logout = () => {
-    console.log('logout');
     sessionStorage.removeItem(AUTH_TOKEN);
     localStorage.removeItem(AUTH_TOKEN);
     navigate('/login');
@@ -33,13 +31,19 @@ export const MainLayout: React.FC = () => {
     <ProLayout
       layout="mix"
       avatarProps={{
-        src: '',
-        title: store.tel,
+        src: store.avatar || '',
+        title: store.name || '',
         size: 'small',
         render: (_, dom) => (
           <Dropdown
             menu={{
               items: [
+                {
+                  key: 'my',
+                  icon: <UserOutlined />,
+                  label: '个人中心',
+                  onClick: () => go(ROUTE_KEYS.MY),
+                },
                 {
                   key: 'logout',
                   icon: <LogoutOutlined />,
@@ -66,7 +70,7 @@ export const MainLayout: React.FC = () => {
         return [];
       }}
     >
-      <PageContainer>{outlet}</PageContainer>
+      {outlet}
     </ProLayout>
   );
 };

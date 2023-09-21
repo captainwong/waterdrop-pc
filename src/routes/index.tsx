@@ -1,22 +1,10 @@
-import { HomeOutlined } from "@ant-design/icons";
 import { NotFound } from "@/pages/404/NotFound";
-import { Home } from "../pages/home/Home";
+import { Home } from "@/pages/home";
+import { My } from "@/pages/my/My";
+import { ROUTE_KEYS } from "./menu";
 
-const ROUTES = [
-  {
-    key: 'home',
-    path: '/home',
-    name: 'Home',
-    element: Home,
-    icon: <HomeOutlined />,
-  },
-  {
-    key: '*',
-    path: '*',
-    name: '404',
-    element: NotFound,
-    hideInMenu: true,
-  },
-];
-
-export default ROUTES;
+export const ROUTE_COMPONENTS = {
+  [ROUTE_KEYS.HOME]: Home,
+  [ROUTE_KEYS.NOT_FOUND]: NotFound,
+  [ROUTE_KEYS.MY]: My,
+};

@@ -3,7 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
 import apolloClient from './utils/apollo';
 import './index.css';
-import ROUTES from './routes';
+import { ROUTE_COMPONENTS } from './routes';
+import { ROUTES } from './routes/menu';
 import { NotFound } from './pages/404/NotFound';
 import UserInfo from './components/userInfo/UserInfo';
 import { MainLayout } from './layouts/mainLayout/MainLayout';
@@ -16,13 +17,16 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<MainLayout />}>
-            {ROUTES.map((route) => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={<route.element />}
-              />
-            ))}
+            {ROUTES.map((route) => {
+              const Component = ROUTE_COMPONENTS[route.key];
+              return (
+                <Route
+                  key={route.key}
+                  path={route.path}
+                  element={<Component />}
+                />
+              );
+            })}
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

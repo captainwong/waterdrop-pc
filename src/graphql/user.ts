@@ -7,8 +7,17 @@ query getUserInfo{
     name
     desc
     tel
-    password
-    account
+    avatar
+  }
+}
+`;
+
+export const UPDATE_USER_INFO = gql`
+mutation updateUserInfo($id: Float!, $params: UserInputDto!){
+  updateUserInfo(id: $id, params: $params){
+    code
+    message
+    data
   }
 }
 `;
