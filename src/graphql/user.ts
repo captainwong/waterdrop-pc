@@ -13,8 +13,8 @@ query getUserInfo{
 `;
 
 export const UPDATE_USER_INFO = gql`
-mutation updateUserInfo($id: Float!, $params: UpdateUserDto!){
-  updateUserInfo(id: $id, params: $params){
+mutation updateUserInfo($params: UpdateUserDto!){
+  updateUserInfo(params: $params){
     code
     message
     data

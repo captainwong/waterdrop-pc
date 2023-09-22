@@ -46,7 +46,6 @@ export const My = () => {
         onFinish={async (values) => {
           const res = await updateUserInfo({
             variables: {
-              id: store.id,
               params: {
                 name: values.name,
                 desc: values.desc,
