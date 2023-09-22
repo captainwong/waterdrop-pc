@@ -26,7 +26,7 @@ export const My = () => {
     });
   }, [store]);
 
-  const [updateUserInfo] = useMutation(UPDATE_USER_INFO);
+  const [updateUserInfo, { loading }] = useMutation(UPDATE_USER_INFO);
 
   return (
     <PageContainer>
@@ -39,6 +39,9 @@ export const My = () => {
               display: 'none',
             },
           },
+          submitButtonProps: {
+            loading,
+          }
         }}
         onFinish={async (values) => {
           const res = await updateUserInfo({
