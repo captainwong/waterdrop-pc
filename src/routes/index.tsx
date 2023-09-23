@@ -1,6 +1,6 @@
-import { NotFound } from "@/pages/404/NotFound";
-import { Home } from "@/pages/home";
-import { My } from "@/pages/my/My";
+import { Home } from "@/pages/home/home";
+import { My } from "@/pages/my/my";
+import { NotFound } from "@/pages/404/notFound";
 import { ROUTE_KEYS } from "./menu";
 
 export const ROUTE_COMPONENTS = {

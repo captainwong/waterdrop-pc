@@ -5,10 +5,10 @@ import apolloClient from './utils/apollo';
 import './index.css';
 import { ROUTE_COMPONENTS } from './routes';
 import { ROUTES } from './routes/menu';
-import { NotFound } from './pages/404/NotFound';
+import { NotFound } from './pages/404/notFound';
 import UserInfo from './components/userInfo/UserInfo';
 import { MainLayout } from './layouts/mainLayout/MainLayout';
-import Login from './pages/login/Login';
+import Login from './pages/login/login';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <ApolloProvider client={apolloClient}>

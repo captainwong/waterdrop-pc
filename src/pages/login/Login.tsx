@@ -14,7 +14,7 @@ import { useTitle } from "@/hooks";
 import { useUserInfoContext } from "@/hooks/userHooks";
 import { SEND_VERIFICATION_CODE, LOGIN } from "../../graphql/auth";
 import { AUTH_TOKEN } from '../../utils/constants';
-import styles from "./Login.module.less";
+import styles from "./login.module.less";
 // import logo from '../../assets/henglogo@2x.png'
 
 interface IValue {
