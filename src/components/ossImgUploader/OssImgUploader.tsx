@@ -6,12 +6,16 @@ import { useQuery } from '@apollo/client';
 import GET_OSS_INFO from '@/graphql/oss';
 
 interface OSSDataType {
-  dir: string;
-  expire: string;
-  host: string;
-  accessId: string;
-  policy: string;
-  signature: string;
+  code: number;
+  message: string;
+  data: {
+    dir: string;
+    expire: string;
+    host: string;
+    accessId: string;
+    policy: string;
+    signature: string;
+  };
 }
 
 interface OSSUploadProps {
@@ -30,7 +34,7 @@ const OssImgUploader = ({
   onChange,
 }: OSSUploadProps) => {
   const { data, refetch } = useQuery<{ getOSSInfo: OSSDataType }>(GET_OSS_INFO);
-  const OSSData = data?.getOSSInfo;
+  const OSSData = data?.getOSSInfo.data;
   const getKey = (file: UploadFile) => {
     const suffix = file.name.slice(file.name.lastIndexOf('.'));
     const key = `${OSSData?.dir}${file.uid}${suffix}`;

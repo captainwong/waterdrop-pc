@@ -19,8 +19,12 @@ export const useGetUserInfo = () => {
   const { loading, refetch } = useQuery<{ getUserInfo: IUser }>(GET_USER_INFO, {
     onCompleted: (data) => {
       if (data.getUserInfo) {
-        const { id, name, desc, tel, avatar } = data.getUserInfo;
-        setStore({ id, name, desc, tel, avatar, refetchHandler: refetch });
+        const {
+          id, name, desc, tel, avatar,
+        } = data.getUserInfo;
+        setStore({
+          id, name, desc, tel, avatar, refetchHandler: refetch,
+        });
         if (location.pathname.startsWith('/login')) {
           navigate('/');
         }

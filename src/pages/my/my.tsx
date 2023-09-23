@@ -7,7 +7,9 @@ import {
   ProFormText,
   ProFormTextArea,
 } from '@ant-design/pro-components';
-import { Col, Form, Row, message } from 'antd';
+import {
+  Col, Form, Row, message,
+} from 'antd';
 import { useUserInfoContext } from '@/hooks/userHooks';
 import { useMutation } from '@apollo/client';
 import { UPDATE_USER_INFO } from '@/graphql/user';

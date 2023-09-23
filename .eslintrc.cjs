@@ -26,9 +26,10 @@ module.exports = {
     'react/react-in-jsx-scope': 0,
     'import/prefer-default-export': 0,
     'react-hooks/exhaustive-deps': 1,
-    'object-curly-newline': 'off',
     'arrow-body-style': 0,
     'operator-linebreak': 0,
+    'prettier/prettier': 0,
+    '@typescript-eslint/no-explicit-any': 0,
   },
   settings: {
     react: {
