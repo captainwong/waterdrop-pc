@@ -1,6 +1,5 @@
-
 export interface IPropsChildren {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export interface IUser {

@@ -4,19 +4,19 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:prettier/recommended',
     'plugin:react/jsx-runtime',
     'plugin:react-hooks/recommended',
     'eslint-config-airbnb',
     'eslint-config-airbnb/hooks',
     'eslint-config-airbnb-typescript',
-    'prettier',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs', 'vite.config.ts'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: './tsconfig.json',
   },
-  plugins: ['react-refresh', ],
+  plugins: ['react-refresh', '@typescript-eslint/eslint-plugin'],
   rules: {
     'react-refresh/only-export-components': [
       'warn',
@@ -26,6 +26,9 @@ module.exports = {
     'react/react-in-jsx-scope': 0,
     'import/prefer-default-export': 0,
     'react-hooks/exhaustive-deps': 1,
+    'object-curly-newline': 'off',
+    'arrow-body-style': 0,
+    'operator-linebreak': 0,
   },
   settings: {
     react: {

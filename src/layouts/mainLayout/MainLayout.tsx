@@ -1,8 +1,5 @@
 import { useUserInfoContext } from '@/hooks/userHooks';
-import {
-  MenuDataItem,
-  ProLayout,
-} from '@ant-design/pro-components';
+import { MenuDataItem, ProLayout } from '@ant-design/pro-components';
 import { Dropdown } from 'antd';
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Link, useNavigate, useOutlet } from 'react-router-dom';
@@ -55,7 +52,7 @@ export const MainLayout = () => {
           >
             {dom}
           </Dropdown>
-        ),        
+        ),
       }}
       logo={logo}
       title={false}

@@ -1,5 +1,5 @@
-import React from "react";
-import { HomeOutlined, UserOutlined } from "@ant-design/icons";
+import React from 'react';
+import { HomeOutlined, ShopOutlined, UserOutlined } from '@ant-design/icons';
 
 interface IRoute {
   path: string;
@@ -9,9 +9,10 @@ interface IRoute {
 }
 
 export const ROUTE_KEYS = {
-  HOME: "home",
-  MY: "my",
-  NOT_FOUND: "404",
+  HOME: 'home',
+  MY: 'my',
+  ORGANIZATION: 'organization',
+  NOT_FOUND: '404',
 };
 
 export const ROUTE_CONFIG: Record<string, IRoute> = {
@@ -25,6 +26,11 @@ export const ROUTE_CONFIG: Record<string, IRoute> = {
     name: 'My',
     icon: <UserOutlined />,
     hideInMenu: true,
+  },
+  [ROUTE_KEYS.ORGANIZATION]: {
+    path: 'organization',
+    name: 'Organization',
+    icon: <ShopOutlined />,
   },
   [ROUTE_KEYS.NOT_FOUND]: {
     path: '*',

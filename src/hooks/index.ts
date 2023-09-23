@@ -1,6 +1,6 @@
-import { ROUTES, getRouteByKey } from "@/routes/menu";
-import { useEffect, useMemo } from "react";
-import { matchPath, useLocation, useNavigate } from "react-router-dom";
+import { ROUTES, getRouteByKey } from '@/routes/menu';
+import { useEffect, useMemo } from 'react';
+import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 
 /**
  * 设置页面标题
@@ -13,7 +13,7 @@ export const useTitle = (title: string) => {
   useEffect(() => {
     document.title = title;
   }, []);
-}
+};
 
 /**
  * 路由跳转
@@ -31,7 +31,7 @@ export const useGoTo = () => {
   const back = () => navigate(-1);
   const go = (pageKey?: string, params?: Record<string, string | number>) => {
     if (!pageKey) {
-      navigate("/");
+      navigate('/');
       return;
     }
     const route = getRouteByKey(pageKey);
@@ -43,23 +43,23 @@ export const useGoTo = () => {
 
       // /page/:id/:name {id: 1, name: 'test'} => /page/1/test
       let path = `/${route.path}`;
-      Object.keys(params).forEach(key => {
+      Object.keys(params).forEach((key) => {
         path = path.replace(`:${key}`, `${params[key]}`);
       });
       navigate(path);
     }
-  }
+  };
   return { back, go };
-}
+};
 
 /**
  * 获取当前匹配的路由
  */
 export const useMatchedRoute = () => {
   const location = useLocation();
-  const route = useMemo(() =>
-    ROUTES.find((item) => matchPath(item.path, location.pathname)),
-    [location.pathname]
+  const route = useMemo(
+    () => ROUTES.find((item) => matchPath(item.path, location.pathname)),
+    [location.pathname],
   );
   return route;
-}
+};

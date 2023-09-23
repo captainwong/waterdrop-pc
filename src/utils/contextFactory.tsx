@@ -20,11 +20,13 @@ function getCtxProvider<T>(
       () => ({
         key,
         store,
-        setStore: (payload = {}) =>
-          setStore((prev) => ({ ...prev, ...payload })),
+        setStore: (payload = {}) => {
+          setStore((prev) => ({ ...prev, ...payload }));
+        },
       }),
       [store],
     );
+
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
   };
 }
@@ -39,11 +41,7 @@ class Ctx<T = any> {
   Provider: ({ children }: IPropsChildren) => JSX.Element;
 
   constructor(key: string, defaultValue: T) {
-    this.defaultStore = {
-      key,
-      store: defaultValue,
-      setStore: () => {},
-    };
+    this.defaultStore = { key, store: defaultValue, setStore: () => {} };
 
     this.AppContext = React.createContext(this.defaultStore);
     this.Provider = getCtxProvider(key, defaultValue, this.AppContext);
@@ -55,10 +53,7 @@ class Ctx<T = any> {
 export function useAppContext<T>(key: string) {
   const ctx = ctxCache[key] as Ctx<T>;
   const app = useContext(ctx.AppContext);
-  return {
-    store: app.store,
-    setStore: app.setStore,
-  };
+  return { store: app.store, setStore: app.setStore };
 }
 
 export function connectFactory<T>(key: string, defaultValue: T) {
@@ -70,12 +65,11 @@ export function connectFactory<T>(key: string, defaultValue: T) {
     CurCtx = new Ctx<T>(key, defaultValue);
   }
 
-  return (Child: React.FC<any>) => (props: any) =>
-    (
-      <CurCtx.Provider>
-        <Child {...props} />
-      </CurCtx.Provider>
-    );
+  return (Child: React.FC<any>) => (props: any) => (
+    <CurCtx.Provider>
+      <Child {...props} />
+    </CurCtx.Provider>
+  );
 }
 
 export default Ctx;

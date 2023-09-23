@@ -41,7 +41,7 @@ export const My = () => {
           },
           submitButtonProps: {
             loading,
-          }
+          },
         }}
         onFinish={async (values) => {
           const res = await updateUserInfo({
@@ -50,15 +50,15 @@ export const My = () => {
                 name: values.name,
                 desc: values.desc,
                 avatar: values.avatar[0]?.url || '',
-              }
-            }
+              },
+            },
           });
           if (res.data?.updateUserInfo?.code === 200) {
             store.refetchHandler?.();
             message.success('更新成功');
           } else {
             message.error(`更新失败！${res.data?.updateUserInfo?.message}`);
-          }          
+          }
         }}
       >
         <Row gutter={20}>

@@ -58,7 +58,7 @@ const OssImgUploader = ({
     const expire = Number(OSSData.expire) * 1000;
     if (expire < Date.now()) {
       await refetch();
-    }    
+    }
     return file;
   };
 
