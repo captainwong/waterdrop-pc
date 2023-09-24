@@ -3,7 +3,7 @@ import {
   Col, Divider, Drawer, Form, Input, Row, Select, Spin, UploadFile, message,
 } from 'antd';
 import { useCreateOrganization, useOrganization, useUpdateOrganization } from '@/services/organization';
-import { IOrganization } from '@/utils/types';
+import { IOrganization } from '@/types/organization';
 import { useMemo } from 'react';
 import OssImgUploader from '@/components/ossImgUploader/OssImgUploader';
 import style from './edit.module.less';

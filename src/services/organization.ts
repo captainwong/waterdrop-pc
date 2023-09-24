@@ -11,7 +11,7 @@ import {
   TOrganization,
   TOrganizationQuery,
   TOrganizationsQuery,
-} from '@/utils/types';
+} from '@/types/organization';
 import { useMutation, useQuery } from '@apollo/client';
 
 export const useOrganizations = (

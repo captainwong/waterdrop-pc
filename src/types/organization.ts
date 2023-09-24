@@ -1,28 +1,5 @@
-export interface IPropsChildren {
-  children: React.ReactNode;
-}
-
-export interface IUser {
-  id: string;
-  name: string;
-  desc: string;
-  tel: string;
-  avatar: string;
-  refetchHandler?: () => void;
-  selectedOrganizationId?: string;
-}
-
-export interface IPage {
-  page: number;
-  pageSize: number;
-  total: number;
-}
-
-export interface IMedia {
-  id: string;
-  url: string;
-  remark: string;
-}
+import { IMedia } from './media';
+import { IPage } from './page';
 
 export interface IOrganization {
   id: string;
@@ -67,23 +44,3 @@ export interface ICurrentOrganization {
   id: string;
   name: string;
 }
-
-export interface IStudent {
-  id: string;
-  name: string;
-  tel: string;
-  avatar: string;
-  account: string;
-}
-
-export type TStudent = Partial<IStudent>;
-
-export type TStudentQuery = {
-  [key: string]: {
-    __typename: 'Query',
-    code: number,
-    message: string,
-    data: IStudent[],
-    page: IPage,
-  }
-};

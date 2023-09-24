@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { connectFactory, useAppContext } from '../utils/contextFactory';
 import { GET_USER_INFO } from '../graphql/user';
-import { IUser } from '../utils/types';
+import { IUser } from '@/types/user';
 
 const USER_INFO = 'USER_INFO';
 const DEFAULT_USER_VALUE = {};

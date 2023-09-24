@@ -1,6 +1,6 @@
 import { GET_STUDENTS } from '@/graphql/student';
 import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
-import { TStudentQuery } from '@/utils/types';
+import { TStudentQuery } from '@/types/student';
 import { useQuery } from '@apollo/client';
 
 export const useStudents = (
