@@ -1,0 +1,16 @@
+/* eslint-disable prettier/prettier */
+import { Button, Result } from 'antd';
+import styles from './{{kebabCase name}}.module.less';
+
+export const {{pascalCase name}} = () => (
+  <Result
+    className={styles.container}
+    title="{{pascalCase name}}"
+    subTitle="{{pascalCase name}}"
+    extra={(
+      <Button type="primary" href="/">
+        返回首页
+      </Button>
+    )}
+  />
+);

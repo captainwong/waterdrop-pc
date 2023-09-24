@@ -14,6 +14,7 @@ export const ROUTE_KEYS = {
   ORGANIZATION: 'organization',
   NO_ORG: 'noOrg',
   NOT_FOUND: '404',
+  STUDENT: 'student',
 };
 
 export const ROUTE_CONFIG: Record<string, IRoute> = {
@@ -42,6 +43,10 @@ export const ROUTE_CONFIG: Record<string, IRoute> = {
     path: '*',
     name: '404',
     hideInMenu: true,
+  },
+  [ROUTE_KEYS.STUDENT]: {
+    path: 'student',
+    name: 'Student',
   },
 };
 
