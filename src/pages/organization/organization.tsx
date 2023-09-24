@@ -5,10 +5,13 @@ import {
   PageContainer,
   ProList,
 } from '@ant-design/pro-components';
-import { Button, Tag } from 'antd';
+import {
+  Button, Popconfirm, Tag, message,
+} from 'antd';
 import { useState } from 'react';
-import { useOrganizations } from '@/services/organization';
+import { useDeleteOrganization, useOrganizations } from '@/services/organization';
 import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import styles from './organization.module.less';
 import EditOrg from './edit/edit';
 
@@ -16,6 +19,7 @@ export const Organization = () => {
   const {
     loading, data, page: pagination, refetch,
   } = useOrganizations();
+  const [doDelete, deleteLoading] = useDeleteOrganization();
 
   const [showEdit, setShowEdit] = useState(false);
   const [curId, setCurId] = useState('');
@@ -26,8 +30,11 @@ export const Organization = () => {
   };
 
   const delInfoHandler = (id: string) => {
-    setCurId(id);
-    setShowEdit(true);
+    doDelete(
+      id,
+      () => { message.success('删除成功', 1, () => refetch()); },
+      (error: string) => { message.error(`删除失败！${error}`); },
+    );
   };
 
   const addInfoHandler = () => {
@@ -54,12 +61,22 @@ export const Organization = () => {
     key: item.id,
     subTitle: <div>{item.tags?.split(',').map((tag) => (<Tag key={tag} color="#5bd8a6">{tag}</Tag>))}</div>,
     actions: [
-      <a key="edit" onClick={() => editInfoHandler(item.id)}>
+      <Button type="link" onClick={() => editInfoHandler(item.id)}>
+        <EditOutlined />
+        {' '}
         编辑
-      </a>,
-      <a key="del" onClick={() => delInfoHandler(item.id)}>
-        删除
-      </a>,
+      </Button>,
+      <Popconfirm
+        title="提醒"
+        description="确认删除该门店？"
+        okButtonProps={{ danger: true, loading: deleteLoading }}
+        onConfirm={() => delInfoHandler(item.id)}
+      >
+        <Button type="link" danger>
+          <DeleteOutlined />
+          删除
+        </Button>
+      </Popconfirm>,
     ],
     content: item.address,
   }));

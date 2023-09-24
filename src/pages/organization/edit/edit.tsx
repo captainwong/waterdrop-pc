@@ -1,6 +1,6 @@
 import {
   Button,
-  Col, Divider, Drawer, Form, Input, Row, Select, Spin, UploadFile,
+  Col, Divider, Drawer, Form, Input, Row, Select, Spin, UploadFile, message,
 } from 'antd';
 import { useOrganization, useUpdateOrganization } from '@/services/organization';
 import { IOrganization } from '@/utils/types';
@@ -36,7 +36,12 @@ const EditOrg = ({
         roomImgs: values?.roomImgs?.map((item: UploadFile) => ({ url: item.url })),
         otherImgs: values?.otherImgs?.map((item: UploadFile) => ({ url: item.url })),
       } as IOrganization;
-      updateOrg(id, formData);
+      updateOrg(
+        id,
+        formData,
+        () => { message.success('更新成功', 1, () => onClose()); },
+        (error) => { message.error(`更新失败！${error}`); },
+      );
     }
   };
 

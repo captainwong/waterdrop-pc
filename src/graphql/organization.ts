@@ -180,3 +180,13 @@ export const GET_ORGANIZATIONS = gql`
     }
   }
 `;
+
+export const DELETE_ORGANIZATION = gql`
+  mutation deleteOrganization($id: String!){
+    deleteOrganization(id: $id){
+      code
+      message
+      data
+    }
+  }
+`;
