@@ -9,6 +9,7 @@ export interface IUser {
   tel: string;
   avatar: string;
   refetchHandler?: () => void;
+  selectedOrganizationId?: string;
 }
 
 export interface IPage {
@@ -67,3 +68,8 @@ export type TOrganizationQuery = {
     data: IOrganization,
   }
 };
+
+export interface ICurrentOrganization {
+  id: string;
+  name: string;
+}

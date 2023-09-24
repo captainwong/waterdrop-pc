@@ -1,7 +1,9 @@
 import {
+  CREATE_ORGANIZATION,
   DELETE_ORGANIZATION,
   GET_ORGANIZATIONS,
   GET_ORGANIZATION_INFO,
+  GET_SIMPLE_ORGANIZATIONS,
   UPDATE_ORGANIZATION,
 } from '@/graphql/organization';
 import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
@@ -12,12 +14,16 @@ import {
 } from '@/utils/types';
 import { useMutation, useQuery } from '@apollo/client';
 
-export const useOrganizations = (page = 1, pageSize = DEFAULT_PAGE_SIZE) => {
+export const useOrganizations = (
+  page = 1,
+  pageSize = DEFAULT_PAGE_SIZE,
+  isSimple = false,
+) => {
   const {
     loading,
     data,
     refetch,
-  } = useQuery<TOrganizationsQuery>(GET_ORGANIZATIONS, {
+  } = useQuery<TOrganizationsQuery>(isSimple ? GET_SIMPLE_ORGANIZATIONS : GET_ORGANIZATIONS, {
     variables: {
       page: { page, pageSize },
     },
@@ -84,6 +90,36 @@ export const useUpdateOrganization = (): [
   };
 
   return [doUpdate, loading];
+};
+
+export type TCreateOrganization = (
+  dto: TOrganization,
+  onSuccess?: () => void,
+  onError?: (error: string) => void,
+) => void;
+
+export const useCreateOrganization = (): [
+  doCreate: TCreateOrganization, loading: boolean,
+] => {
+  const [create, { loading }] = useMutation(CREATE_ORGANIZATION);
+  const doCreate = async (
+    dto: TOrganization,
+    onSuccess?: () => void,
+    onError?: (error: string) => void,
+  ) => {
+    const res = await create({
+      variables: {
+        dto,
+      },
+    });
+    if (res.data?.createOrganization.code === 200) {
+      onSuccess?.();
+    } else {
+      onError?.(res.data?.createOrganization.message);
+    }
+  };
+
+  return [doCreate, loading];
 };
 
 export type TDeleteOrganization = (

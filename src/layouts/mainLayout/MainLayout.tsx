@@ -1,11 +1,12 @@
 import { useUserInfoContext } from '@/hooks/userHooks';
 import { MenuDataItem, ProLayout } from '@ant-design/pro-components';
-import { Dropdown } from 'antd';
-import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import { Dropdown, Tooltip } from 'antd';
+import { LogoutOutlined, ShopOutlined, UserOutlined } from '@ant-design/icons';
 import { Link, useNavigate, useOutlet } from 'react-router-dom';
 import { ROUTES, ROUTE_KEYS } from '@/routes/menu';
 import { AUTH_TOKEN } from '@/utils/constants';
 import { useGoTo } from '@/hooks';
+import { OrganizationSelect } from '@/components/orgSelect/OrganizationSelect';
 import logo from '../../assets/henglogo@2x.png';
 
 const menuItemRender = (item: MenuDataItem, dom: React.ReactNode) => (
@@ -62,10 +63,12 @@ export const MainLayout = () => {
       }}
       menuItemRender={menuItemRender}
       onMenuHeaderClick={() => navigate('/home')}
-      actionsRender={(props) => {
-        if (props) return [];
-        return [];
-      }}
+      actionsRender={() => [
+        <OrganizationSelect />,
+        <Tooltip title="门店管理">
+          <ShopOutlined onClick={() => go(ROUTE_KEYS.ORGANIZATION)} />
+        </Tooltip>,
+      ]}
     >
       {outlet}
     </ProLayout>

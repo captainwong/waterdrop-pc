@@ -12,7 +12,7 @@ import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 export const useTitle = (title: string) => {
   useEffect(() => {
     document.title = title;
-  }, []);
+  });
 };
 
 /**
@@ -28,6 +28,7 @@ export const useTitle = (title: string) => {
  */
 export const useGoTo = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const back = () => navigate(-1);
   const go = (pageKey?: string, params?: Record<string, string | number>) => {
     if (!pageKey) {
@@ -46,6 +47,9 @@ export const useGoTo = () => {
       Object.keys(params).forEach((key) => {
         path = path.replace(`:${key}`, `${params[key]}`);
       });
+      if (location.pathname === path) {
+        return;
+      }
       navigate(path);
     }
   };

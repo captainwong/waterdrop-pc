@@ -7,12 +7,6 @@ export const CREATE_ORGANIZATION = gql`
       message
       data {
         id
-        createdAt
-        createdBy
-        updatedAt
-        updatedBy
-        deletedAt
-        deletedBy
         businessLicense
         identityCardBackImg
         identityCardFrontImg
@@ -51,12 +45,6 @@ export const UPDATE_ORGANIZATION = gql`
       message
       data {
         id
-        createdAt
-        createdBy
-        updatedAt
-        updatedBy
-        deletedAt
-        deletedBy
         businessLicense
         identityCardBackImg
         identityCardFrontImg
@@ -95,12 +83,6 @@ export const GET_ORGANIZATION_INFO = gql`
       message
       data {
         id
-        createdAt
-        createdBy
-        updatedAt
-        updatedBy
-        deletedAt
-        deletedBy
         businessLicense
         identityCardBackImg
         identityCardFrontImg
@@ -144,38 +126,23 @@ export const GET_ORGANIZATIONS = gql`
       }
       data {
         id
-        createdAt
-        createdBy
-        updatedAt
-        updatedBy
-        deletedAt
-        deletedBy
-        businessLicense
-        identityCardBackImg
-        identityCardFrontImg
-        tags
-        desc
         name
-        tel
         address
-        longitude
-        latitude
         logo
-        frontImgs {
-          id
-          url
-          remark
-        }
-        roomImgs {
-          id
-          url
-          remark
-        }
-        otherImgs {
-          id
-          url
-          remark
-        }
+        tags
+      }
+    }
+  }
+`;
+
+export const GET_SIMPLE_ORGANIZATIONS = gql`
+  query getOrganizations($page: PageInput!, $name: String) {
+    getOrganizations(page: $page, name: $name) {
+      code
+      message
+      data {
+        id
+        name
       }
     }
   }

@@ -2,7 +2,7 @@ import {
   Button,
   Col, Divider, Drawer, Form, Input, Row, Select, Spin, UploadFile, message,
 } from 'antd';
-import { useOrganization, useUpdateOrganization } from '@/services/organization';
+import { useCreateOrganization, useOrganization, useUpdateOrganization } from '@/services/organization';
 import { IOrganization } from '@/utils/types';
 import { useMemo } from 'react';
 import OssImgUploader from '@/components/ossImgUploader/OssImgUploader';
@@ -21,6 +21,7 @@ const EditOrg = ({
 
   const { data, loading: queryLoading } = useOrganization(id);
   const [updateOrg, updateLoading] = useUpdateOrganization();
+  const [createOrg, createLoading] = useCreateOrganization();
 
   const onFinishHandler = async () => {
     const values = await form.validateFields();
@@ -36,12 +37,21 @@ const EditOrg = ({
         roomImgs: values?.roomImgs?.map((item: UploadFile) => ({ url: item.url })),
         otherImgs: values?.otherImgs?.map((item: UploadFile) => ({ url: item.url })),
       } as IOrganization;
-      updateOrg(
-        id,
-        formData,
-        () => { message.success('更新成功', 1, () => onClose()); },
-        (error) => { message.error(`更新失败！${error}`); },
-      );
+
+      if (id) {
+        updateOrg(
+          id,
+          formData,
+          () => { message.success('更新成功', 1, () => onClose()); },
+          (error) => { message.error(`更新失败！${error}`); },
+        );
+      } else {
+        createOrg(
+          formData,
+          () => { message.success('创建成功', 1, () => onClose()); },
+          (error) => { message.error(`创建失败！${error}`); },
+        );
+      }
     }
   };
 
@@ -60,18 +70,18 @@ const EditOrg = ({
 
   return (
     <Drawer
-      title="编辑门店信息"
+      title={id ? '编辑门店信息' : '新增门店信息'}
       width="70vw"
       onClose={onClose}
       open
       footerStyle={{ textAlign: 'right' }}
       footer={(
         <Button
-          loading={updateLoading}
+          loading={updateLoading || createLoading}
           type="primary"
           onClick={onFinishHandler}
         >
-          保存
+          {id ? '保存' : '创建'}
         </Button>
       )}
     >
@@ -86,7 +96,7 @@ const EditOrg = ({
             >
               <OssImgUploader
                 maxCount={1}
-                label="替换 Logo"
+                label="上传 Logo"
               />
             </Form.Item>
           </Col>
@@ -172,7 +182,7 @@ const EditOrg = ({
               rules={[{ required: true }]}
             >
               <OssImgUploader
-                label="替换营业执照"
+                label="上传营业执照"
                 maxCount={1}
                 imgCropAspect={3 / 2}
               />
@@ -186,7 +196,7 @@ const EditOrg = ({
               rules={[{ required: true }]}
             >
               <OssImgUploader
-                label="替换身份证"
+                label="上传身份证"
                 maxCount={1}
                 imgCropAspect={3 / 2}
               />
@@ -200,7 +210,7 @@ const EditOrg = ({
               rules={[{ required: true }]}
             >
               <OssImgUploader
-                label="替换身份证"
+                label="上传身份证"
                 maxCount={1}
                 imgCropAspect={3 / 2}
               />

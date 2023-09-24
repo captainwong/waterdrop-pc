@@ -1,5 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useContext, useMemo, useState } from 'react';
 import { IPropsChildren } from './types';
 
