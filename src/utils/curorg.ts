@@ -1,5 +1,5 @@
+import { ICurrentOrganization } from '@/types/organization';
 import { LOCAL_STORAGE_KEY_CUR_ORG } from './constants';
-import { ICurrentOrganization } from './types';
 
 export const setCurrentOrganization = (org: ICurrentOrganization) => {
   localStorage.setItem(LOCAL_STORAGE_KEY_CUR_ORG, JSON.stringify(org));

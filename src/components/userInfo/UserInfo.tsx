@@ -1,6 +1,6 @@
 import { Spin } from 'antd';
+import { IPropsChildren } from '@/types/children';
 import { connect, useGetUserInfo } from '../../hooks/userHooks';
-import { IPropsChildren } from '@/types/children'; 
 
 const UserInfoComponent = ({ children }: IPropsChildren) => {
   const { loading } = useGetUserInfo();

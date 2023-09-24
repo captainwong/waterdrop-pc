@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext, useMemo, useState } from 'react';
-import { IPropsChildren } from './types';
+import { IPropsChildren } from '@/types/children';
 
 interface IStore<T> {
   key: string;
