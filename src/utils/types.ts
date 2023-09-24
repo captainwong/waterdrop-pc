@@ -26,12 +26,6 @@ export interface IMedia {
 
 export interface IOrganization {
   id: string;
-  // createdAt: string;
-  // createdBy: string;
-  // updatedAt: string;
-  // updatedBy: string;
-  // deletedAt: string;
-  // deletedBy: string;
   businessLicense: string;
   identityCardBackImg: string;
   identityCardFrontImg: string;
@@ -73,3 +67,23 @@ export interface ICurrentOrganization {
   id: string;
   name: string;
 }
+
+export interface IStudent {
+  id: string;
+  name: string;
+  tel: string;
+  avatar: string;
+  account: string;
+}
+
+export type TStudent = Partial<IStudent>;
+
+export type TStudentQuery = {
+  [key: string]: {
+    __typename: 'Query',
+    code: number,
+    message: string,
+    data: IStudent[],
+    page: IPage,
+  }
+};

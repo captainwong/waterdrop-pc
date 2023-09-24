@@ -6,7 +6,7 @@ import _ from 'lodash';
 import { Select } from 'antd';
 
 export const OrganizationSelect = () => {
-  const { data: orgs, refetch } = useOrganizations(1, DEFAULT_PAGE_SIZE, true);
+  const { orgs, refetch } = useOrganizations(1, DEFAULT_PAGE_SIZE, true);
   // const { go } = useGoTo();
   const { setStore } = useUserInfoContext();
 

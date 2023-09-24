@@ -1,5 +1,5 @@
 import React from 'react';
-import { HomeOutlined, UserOutlined } from '@ant-design/icons';
+import { HomeOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
 
 interface IRoute {
   path: string;
@@ -20,18 +20,18 @@ export const ROUTE_KEYS = {
 export const ROUTE_CONFIG: Record<string, IRoute> = {
   [ROUTE_KEYS.HOME]: {
     path: 'home',
-    name: 'Home',
+    name: '主页',
     icon: <HomeOutlined />,
   },
   [ROUTE_KEYS.MY]: {
     path: 'my',
-    name: 'My',
+    name: '个人中心',
     icon: <UserOutlined />,
     hideInMenu: true,
   },
   [ROUTE_KEYS.ORGANIZATION]: {
     path: 'organization',
-    name: 'Organization',
+    name: '门店管理',
     hideInMenu: true,
   },
   [ROUTE_KEYS.NO_ORG]: {
@@ -46,7 +46,8 @@ export const ROUTE_CONFIG: Record<string, IRoute> = {
   },
   [ROUTE_KEYS.STUDENT]: {
     path: 'student',
-    name: 'Student',
+    name: '学员管理',
+    icon: <TeamOutlined />,
   },
 };
 

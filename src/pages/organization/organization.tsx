@@ -17,7 +17,7 @@ import EditOrg from './edit/edit';
 
 export const Organization = () => {
   const {
-    loading, data, page: pagination, refetch,
+    loading, orgs, pagination, refetch,
   } = useOrganizations();
   const [doDelete, deleteLoading] = useDeleteOrganization();
 
@@ -42,9 +42,11 @@ export const Organization = () => {
     setShowEdit(true);
   };
 
-  const onCloseHandler = () => {
+  const onCloseHandler = (shouldRefetch: boolean) => {
     setShowEdit(false);
-    refetch();
+    if (shouldRefetch) {
+      refetch();
+    }
   };
 
   const onPageChangeHandler = (page: number, pageSize: number) => {
@@ -56,7 +58,7 @@ export const Organization = () => {
     });
   };
 
-  const dataSource = data?.map((item) => ({
+  const dataSource = orgs?.map((item) => ({
     ...item,
     key: item.id,
     subTitle: <div>{item.tags?.split(',').map((tag) => (<Tag key={tag} color="#5bd8a6">{tag}</Tag>))}</div>,

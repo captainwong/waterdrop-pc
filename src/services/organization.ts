@@ -34,8 +34,8 @@ export const useOrganizations = (
     refetch,
     code: data?.getOrganizations.code,
     message: data?.getOrganizations.message,
-    data: data?.getOrganizations.data,
-    page: data?.getOrganizations.page,
+    orgs: data?.getOrganizations.data,
+    pagination: data?.getOrganizations.page,
   };
 };
 
@@ -55,7 +55,7 @@ export const useOrganization = (id: string) => {
     refetch,
     code: data?.getOrganizationInfo.code,
     message: data?.getOrganizationInfo.message,
-    data: data?.getOrganizationInfo.data,
+    org: data?.getOrganizationInfo.data,
   };
 };
 

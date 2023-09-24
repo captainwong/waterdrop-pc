@@ -10,7 +10,7 @@ import style from './edit.module.less';
 
 interface IProp {
   id: string;
-  onClose: () => void;
+  onClose: (shouldRefetch: boolean) => void;
 }
 
 const EditOrg = ({
@@ -19,7 +19,7 @@ const EditOrg = ({
 }: IProp) => {
   const [form] = Form.useForm();
 
-  const { data, loading: queryLoading } = useOrganization(id);
+  const { org, loading: queryLoading } = useOrganization(id);
   const [updateOrg, updateLoading] = useUpdateOrganization();
   const [createOrg, createLoading] = useCreateOrganization();
 
@@ -42,27 +42,27 @@ const EditOrg = ({
         updateOrg(
           id,
           formData,
-          () => { message.success('更新成功', 1, () => onClose()); },
+          () => { message.success('更新成功', 1, () => onClose(true)); },
           (error) => { message.error(`更新失败！${error}`); },
         );
       } else {
         createOrg(
           formData,
-          () => { message.success('创建成功', 1, () => onClose()); },
+          () => { message.success('创建成功', 1, () => onClose(true)); },
           (error) => { message.error(`创建失败！${error}`); },
         );
       }
     }
   };
 
-  const initValue = useMemo(() => (data ? {
-    ...data,
-    tags: data.tags?.split(','),
-    logo: [{ url: data.logo }],
-    identityCardBackImg: [{ url: data.identityCardBackImg }],
-    identityCardFrontImg: [{ url: data.identityCardFrontImg }],
-    businessLicense: [{ url: data.businessLicense }],
-  } : {}), [data]);
+  const initValue = useMemo(() => (org ? {
+    ...org,
+    tags: org.tags?.split(','),
+    logo: [{ url: org.logo }],
+    identityCardBackImg: [{ url: org.identityCardBackImg }],
+    identityCardFrontImg: [{ url: org.identityCardFrontImg }],
+    businessLicense: [{ url: org.businessLicense }],
+  } : {}), [org]);
 
   if (queryLoading) {
     return <Spin />;
@@ -72,7 +72,7 @@ const EditOrg = ({
     <Drawer
       title={id ? '编辑门店信息' : '新增门店信息'}
       width="70vw"
-      onClose={onClose}
+      onClose={() => onClose(false)}
       open
       footerStyle={{ textAlign: 'right' }}
       footer={(
