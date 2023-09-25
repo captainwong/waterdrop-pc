@@ -71,7 +71,7 @@ export type TUpdateCourse = (
   onError?: (error: string) => void,
 ) => void;
 
-export const useUpdateCourse = () => {
+export const useUpdateCourse = (): [TUpdateCourse, boolean] => {
   const [update, { loading }] = useMutation<TCourseMutation>(UPDATE_COURSE);
   const doUpdate = async (
     id: string,
