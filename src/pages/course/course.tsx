@@ -10,7 +10,7 @@ import { getColumns } from './columns';
 
 export const Course = () => {
   const actionRef = useRef<ActionType>();
-  const { request } = useLasyCourses();
+  const { getCourses } = useLasyCourses();
   const [curId, setCurId] = useState('');
 
   console.log(curId);
@@ -34,7 +34,7 @@ export const Course = () => {
             新建
           </Button>,
         ]}
-        request={request}
+        request={(params) => getCourses(params.name, params.current, params.pageSize)}
       />
     </PageContainer>
   );

@@ -10,6 +10,15 @@ export interface ICourse {
 
 export type TCourse = Partial<ICourse>;
 
+export type TCourseQuery = {
+  [key: string]: {
+    __typename: 'Query',
+    code: number,
+    message: string,
+    data: ICourse,
+  }
+};
+
 export type TCoursesQuery = {
   [key: string]: {
     __typename: 'Query',
@@ -17,5 +26,14 @@ export type TCoursesQuery = {
     message: string,
     data: ICourse[],
     page: IPage,
+  }
+};
+
+export type TCourseMutation = {
+  [key: string]: {
+    __typename: 'Mutation',
+    code: number,
+    message: string,
+    data: ICourse,
   }
 };
