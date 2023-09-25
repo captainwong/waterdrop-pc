@@ -1,8 +1,7 @@
-import { GET_COURSES } from '@/graphql/course';
+import { GET_COURSE, GET_COURSES } from '@/graphql/course';
 import { TCoursesQuery } from '@/types/course';
-import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
 import { ParamsType } from '@ant-design/pro-components';
-import { useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 
 type TFetchCoursesParams = ParamsType & {
   pageSize?: number | undefined;
@@ -10,38 +9,38 @@ type TFetchCoursesParams = ParamsType & {
   keyword?: string | undefined;
 };
 
-export const useLasyCourses = (page = 1, pageSize = DEFAULT_PAGE_SIZE) => {
-  const {
-    loading,
-    refetch,
-  } = useQuery<TCoursesQuery>(GET_COURSES, {
-    skip: true,
-    variables: {
-      page: { page, pageSize },
-    },
-  });
+export const useLasyCourses = () => {
+  const [get, { loading, error }] = useLazyQuery<TCoursesQuery>(GET_COURSES);
 
   const request = async (params: TFetchCoursesParams) => {
-    // console.log('params:', params);
-    const { data: res, errors } = await refetch({
-      name: params.name,
-      page: {
-        page: params.current,
-        pageSize: params.pageSize,
+    const res = await get({
+      variables: {
+        name: params.name,
+        page: {
+          page: params.current,
+          pageSize: params.pageSize,
+        },
       },
     });
 
-    if (errors) {
+    if (error) {
       return {
         success: false,
-        error: errors[0].message,
+        error: error.message,
+      };
+    }
+
+    if (res?.data?.getCourses.code !== 200) {
+      return {
+        success: false,
+        error: res?.data?.getCourses.message || 'error',
       };
     }
 
     return {
       success: true,
-      data: res?.getCourses.data,
-      total: res?.getCourses.page.total,
+      data: res?.data?.getCourses.data,
+      total: res?.data?.getCourses.page.total,
     };
   };
 
@@ -49,4 +48,18 @@ export const useLasyCourses = (page = 1, pageSize = DEFAULT_PAGE_SIZE) => {
     loading,
     request,
   };
+};
+
+export const useLazyCourse = () => {
+  const [get, { loading }] = useLazyQuery(GET_COURSE);
+  const getCourse = async (id: string) => {
+    const res = await get({
+      variables: {
+        id,
+      },
+    });
+    return res.data.getCourseInfo.data;
+  };
+
+  return { getCourse, loading };
 };
