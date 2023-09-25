@@ -1,10 +1,9 @@
 import {
-  CREATE_ORGANIZATION,
+  CREATE_OR_UPDATE_ORGANIZATION,
   DELETE_ORGANIZATION,
   GET_ORGANIZATIONS,
   GET_ORGANIZATION_INFO,
   GET_SIMPLE_ORGANIZATIONS,
-  UPDATE_ORGANIZATION,
 } from '@/graphql/organization';
 import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
 import {
@@ -59,67 +58,37 @@ export const useOrganization = (id: string) => {
   };
 };
 
-export type TUpdateOrganization = (
-  id: string,
+export type TCreateOrUpdateOrganization = (
   dto: TOrganization,
+  id?: string,
   onSuccess?: () => void,
   onError?: (error: string) => void,
 ) => void;
 
-export const useUpdateOrganization = (): [
-  doUpdate: TUpdateOrganization, loading: boolean,
+export const useCreateOrUpdateOrganization = (): [
+  doCreate: TCreateOrUpdateOrganization, loading: boolean,
 ] => {
-  const [update, { loading }] = useMutation(UPDATE_ORGANIZATION);
-  const doUpdate = async (
-    id: string,
+  const [commit, { loading }] = useMutation(CREATE_OR_UPDATE_ORGANIZATION);
+  const createOrUpdateOrganization = async (
     dto: TOrganization,
+    id?: string,
     onSuccess?: () => void,
     onError?: (error: string) => void,
   ) => {
-    const res = await update({
+    const res = await commit({
       variables: {
         id,
         dto,
       },
     });
-    if (res.data?.updateOrganizationInfo.code === 200) {
+    if (res.data?.createOrUpdateOrganization.code === 200) {
       onSuccess?.();
     } else {
-      onError?.(res.data?.updateOrganizationInfo.message);
+      onError?.(res.data?.createOrUpdateOrganization.message);
     }
   };
 
-  return [doUpdate, loading];
-};
-
-export type TCreateOrganization = (
-  dto: TOrganization,
-  onSuccess?: () => void,
-  onError?: (error: string) => void,
-) => void;
-
-export const useCreateOrganization = (): [
-  doCreate: TCreateOrganization, loading: boolean,
-] => {
-  const [create, { loading }] = useMutation(CREATE_ORGANIZATION);
-  const doCreate = async (
-    dto: TOrganization,
-    onSuccess?: () => void,
-    onError?: (error: string) => void,
-  ) => {
-    const res = await create({
-      variables: {
-        dto,
-      },
-    });
-    if (res.data?.createOrganization.code === 200) {
-      onSuccess?.();
-    } else {
-      onError?.(res.data?.createOrganization.message);
-    }
-  };
-
-  return [doCreate, loading];
+  return [createOrUpdateOrganization, loading];
 };
 
 export type TDeleteOrganization = (

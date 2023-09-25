@@ -2,7 +2,7 @@ import {
   Button,
   Col, Divider, Drawer, Form, Input, Row, Select, Spin, UploadFile, message,
 } from 'antd';
-import { useCreateOrganization, useOrganization, useUpdateOrganization } from '@/services/organization';
+import { useCreateOrUpdateOrganization, useOrganization } from '@/services/organization';
 import { IOrganization } from '@/types/organization';
 import { useMemo } from 'react';
 import OssImgUploader from '@/components/ossImgUploader/OssImgUploader';
@@ -20,13 +20,12 @@ const EditOrg = ({
   const [form] = Form.useForm();
 
   const { org, loading: queryLoading } = useOrganization(id);
-  const [updateOrg, updateLoading] = useUpdateOrganization();
-  const [createOrg, createLoading] = useCreateOrganization();
+  const [createOrUpdateOrganization, loading] = useCreateOrUpdateOrganization();
 
   const onFinishHandler = async () => {
     const values = await form.validateFields();
     if (values) {
-      const formData = {
+      const dto = {
         ...values,
         logo: values.logo[0].url,
         tags: values.tags.join(','),
@@ -38,20 +37,12 @@ const EditOrg = ({
         otherImgs: values?.otherImgs?.map((item: UploadFile) => ({ url: item.url })),
       } as IOrganization;
 
-      if (id) {
-        updateOrg(
-          id,
-          formData,
-          () => { message.success('更新成功', 1, () => onClose(true)); },
-          (error) => { message.error(`更新失败！${error}`); },
-        );
-      } else {
-        createOrg(
-          formData,
-          () => { message.success('创建成功', 1, () => onClose(true)); },
-          (error) => { message.error(`创建失败！${error}`); },
-        );
-      }
+      createOrUpdateOrganization(dto, id, () => {
+        message.success(id ? '更新成功' : '创建成功');
+        onClose(true);
+      }, (error) => {
+        message.success(id ? `更新失败！${error}` : `创建失败！${error}`);
+      });
     }
   };
 
@@ -77,7 +68,7 @@ const EditOrg = ({
       footerStyle={{ textAlign: 'right' }}
       footer={(
         <Button
-          loading={updateLoading || createLoading}
+          loading={loading}
           type="primary"
           onClick={onFinishHandler}
         >

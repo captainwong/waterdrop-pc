@@ -1,12 +1,18 @@
 import { gql } from '@apollo/client';
 
-export const CREATE_ORGANIZATION = gql`
-  mutation createOrganization($dto: CreateOrganizationDto!) {
-    createOrganization(dto: $dto) {
+export const CREATE_OR_UPDATE_ORGANIZATION = gql`
+  mutation createOrUpdateOrganization($dto: CreateOrganizationDto!, $id:String){
+    createOrUpdateOrganization(dto: $dto, id:$id){
       code
       message
-      data {
+      data{
         id
+        createdAt
+        createdBy
+        updatedAt
+        updatedBy
+        deletedAt
+        deletedBy
         businessLicense
         identityCardBackImg
         identityCardFrontImg
@@ -18,55 +24,17 @@ export const CREATE_ORGANIZATION = gql`
         longitude
         latitude
         logo
-        frontImgs {
+        frontImgs{
           id
           url
           remark
         }
-        roomImgs {
+        roomImgs{
           id
           url
           remark
         }
-        otherImgs {
-          id
-          url
-          remark
-        }
-      }
-    }
-  }
-`;
-
-export const UPDATE_ORGANIZATION = gql`
-  mutation updateOrganizationInfo($id: String!, $dto: UpdateOrganizationDto!) {
-    updateOrganizationInfo(id: $id, dto: $dto) {
-      code
-      message
-      data {
-        id
-        businessLicense
-        identityCardBackImg
-        identityCardFrontImg
-        tags
-        desc
-        name
-        tel
-        address
-        longitude
-        latitude
-        logo
-        frontImgs {
-          id
-          url
-          remark
-        }
-        roomImgs {
-          id
-          url
-          remark
-        }
-        otherImgs {
+        otherImgs{
           id
           url
           remark
