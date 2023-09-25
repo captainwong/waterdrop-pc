@@ -42,9 +42,9 @@ export const Organization = () => {
     setShowEdit(true);
   };
 
-  const onCloseHandler = (shouldRefetch: boolean) => {
+  const onCloseHandler = (shouldReload: boolean) => {
     setShowEdit(false);
-    if (shouldRefetch) {
+    if (shouldReload) {
       refetch();
     }
   };

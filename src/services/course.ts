@@ -1,4 +1,6 @@
-import { GET_COURSE, GET_COURSES, UPDATE_COURSE } from '@/graphql/course';
+import {
+  CREATE_OR_UPDATE_COURSE, GET_COURSE, GET_COURSES,
+} from '@/graphql/course';
 import {
   TCourse, TCourseMutation, TCourseQuery, TCoursesQuery,
 } from '@/types/course';
@@ -65,17 +67,17 @@ export const useLazyCourse = () => {
 };
 
 export type TUpdateCourse = (
-  id: string,
   dto: TCourse,
+  id?: string,
   onSuccess?: () => void,
   onError?: (error: string) => void,
 ) => void;
 
-export const useUpdateCourse = (): [TUpdateCourse, boolean] => {
-  const [update, { loading }] = useMutation<TCourseMutation>(UPDATE_COURSE);
-  const doUpdate = async (
-    id: string,
+export const useCreateOrUpdateCourse = (): [TUpdateCourse, boolean] => {
+  const [update, { loading }] = useMutation<TCourseMutation>(CREATE_OR_UPDATE_COURSE);
+  const commitCourse = async (
     dto: TCourse,
+    id?: string,
     onSuccess?: () => void,
     onError?: (error: string) => void,
   ) => {
@@ -86,12 +88,12 @@ export const useUpdateCourse = (): [TUpdateCourse, boolean] => {
       },
     });
 
-    if (res.data?.updateCourseInfo.code === 200) {
+    if (res.data?.createOrUpdateCourse.code === 200) {
       onSuccess?.();
     } else {
-      onError?.(res.data?.updateCourseInfo.message || 'error');
+      onError?.(res.data?.createOrUpdateCourse.message || 'error');
     }
   };
 
-  return [doUpdate, loading];
+  return [commitCourse, loading];
 };

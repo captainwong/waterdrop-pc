@@ -10,7 +10,7 @@ import style from './edit.module.less';
 
 interface IProp {
   id: string;
-  onClose: (shouldRefetch: boolean) => void;
+  onClose: (shouldReload: boolean) => void;
 }
 
 const EditOrg = ({

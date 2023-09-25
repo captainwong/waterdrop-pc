@@ -3,9 +3,15 @@ import { IPage } from './page';
 export interface ICourse {
   id: string;
   name: string;
-  tel: string;
-  avatar: string;
-  account: string;
+  desc?: string;
+  group?: string;
+  baseAbility: string;
+  limit: number;
+  duration: number;
+  reservation?: string;
+  refund?: string;
+  note?: string;
+  cover: string;
 }
 
 export type TCourse = Partial<ICourse>;

@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
-export const CREATE_COURSE = gql`
-  mutation createCourse($dto: CreateCourseDto!){
-    createCourse(dto: $dto){
+export const CREATE_OR_UPDATE_COURSE = gql`
+  mutation createOrUpdateCourse($dto: CreateCourseDto!, $id: String){
+    createOrUpdateCourse(dto: $dto, id: $id){
       code
       message
       data{
@@ -25,28 +25,6 @@ export const CREATE_COURSE = gql`
 export const GET_COURSE = gql`
   query getCourseInfo($id: String!){
     getCourseInfo(id: $id){
-      code
-      message
-      data{
-        id
-        name
-        desc
-        group
-        baseAbility
-        limit
-        duration
-        reservation
-        cover
-        refund
-        note
-      }
-    }
-  }
-`;
-
-export const UPDATE_COURSE = gql`
-  mutation updateCourseInfo($id: String!, $dto: UpdateCourseDto!){
-    updateCourseInfo(id: $id, dto: $dto){
       code
       message
       data{

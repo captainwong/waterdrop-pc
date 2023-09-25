@@ -7,16 +7,26 @@ import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useLasyCourses } from '@/services/course';
 import { getColumns } from './columns';
+import { EditCourse } from './edit/edit';
 
 export const Course = () => {
   const actionRef = useRef<ActionType>();
   const { getCourses } = useLasyCourses();
   const [curId, setCurId] = useState('');
+  const [showEdit, setShowEdit] = useState(false);
 
   console.log(curId);
 
   const onClickAdd = (id?: string) => {
     setCurId(id || '');
+    setShowEdit(true);
+  };
+
+  const onEditClose = (shouldReload?: boolean) => {
+    setShowEdit(false);
+    if (shouldReload) {
+      actionRef.current?.reload();
+    }
   };
 
   return (
@@ -36,6 +46,7 @@ export const Course = () => {
         ]}
         request={(params) => getCourses(params.name, params.current, params.pageSize)}
       />
+      {showEdit && <EditCourse id={curId} onClose={onEditClose} /> }
     </PageContainer>
   );
 };
