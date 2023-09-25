@@ -50,7 +50,7 @@ export const My = () => {
             desc: values.desc,
             avatar: values.avatar[0]?.url || '',
           }, () => {
-            store.refetchHandler?.();
+            store.refetch?.();
             message.success('更新成功');
           }, (error) => {
             message.error(`更新失败！${error}`);

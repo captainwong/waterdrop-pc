@@ -5,7 +5,7 @@ export const GET_USER_BY_TOKEN = gql`
     getUserByToken{
       code
       message
-      data{
+      data {
           name
           desc
           tel
@@ -21,7 +21,7 @@ export const UPDATE_USER_BY_TOKEN = gql`
     updateUserByToken(dto: $dto){
       code
       message
-      data{
+      data {
           name
           desc
           tel

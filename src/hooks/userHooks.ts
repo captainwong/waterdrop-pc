@@ -1,8 +1,8 @@
-import { useQuery } from '@apollo/client';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IUser, TUserQuery } from '@/types/user';
+import { GET_USER_BY_TOKEN } from '@/graphql/user';
+import { useQuery } from '@apollo/client';
 import { connectFactory, useAppContext } from '../utils/contextFactory';
-import { GET_USER_BY_TOKEN } from '../graphql/user';
 
 const USER_INFO = 'USER_INFO';
 const DEFAULT_USER_VALUE = {};
@@ -18,26 +18,21 @@ export const useGetUserInfo = () => {
 
   const { loading, refetch } = useQuery<TUserQuery>(GET_USER_BY_TOKEN, {
     onCompleted: (data) => {
-      if (data.getUserByToken.data) {
-        const {
-          id, name, desc, tel, avatar,
-        } = data.getUserByToken.data;
-        setStore({
-          id, name, desc, tel, avatar, refetchHandler: refetch,
-        });
+      if (data.getUserByToken.code === 200) {
+        setStore({ ...data?.getUserByToken.data, refetch });
         if (location.pathname.startsWith('/login')) {
           navigate('/');
         }
         return;
       }
 
-      setStore({ refetchHandler: refetch });
+      setStore({ refetch });
       if (!location.pathname.startsWith('/login')) {
         navigate(`/login?redirect=${location.pathname}`);
       }
     },
     onError: () => {
-      setStore({ refetchHandler: refetch });
+      setStore({ refetch });
       if (!location.pathname.startsWith('/login')) {
         navigate(`/login?redirect=${location.pathname}`);
       }

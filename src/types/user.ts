@@ -1,10 +1,15 @@
+import { ApolloQueryResult, OperationVariables } from '@apollo/client';
+
+export type TRefetchUser = ((variables?: Partial<OperationVariables> | undefined)
+=> Promise<ApolloQueryResult<TUserQuery>>);
+
 export interface IUser {
   id: string;
   name: string;
   desc: string;
   tel: string;
   avatar: string;
-  refetchHandler?: () => void;
+  refetch?: TRefetchUser;
   selectedOrganizationId?: string;
 }
 

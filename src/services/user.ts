@@ -1,5 +1,7 @@
 import { UPDATE_USER_BY_TOKEN } from '@/graphql/user';
-import { TUser, TUserMutation } from '@/types/user';
+import {
+  TUser, TUserMutation,
+} from '@/types/user';
 import { useMutation } from '@apollo/client';
 
 export type TUpdateUserByToken = (
