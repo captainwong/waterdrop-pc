@@ -15,6 +15,7 @@ export const ROUTE_KEYS = {
   NO_ORG: 'noOrg',
   NOT_FOUND: '404',
   STUDENT: 'student',
+  COURSE: 'course',
 };
 
 export const ROUTE_CONFIG: Record<string, IRoute> = {
@@ -48,6 +49,10 @@ export const ROUTE_CONFIG: Record<string, IRoute> = {
     path: 'student',
     name: '学员管理',
     icon: <TeamOutlined />,
+  },
+  [ROUTE_KEYS.COURSE]: {
+    path: 'course',
+    name: 'Course',
   },
 };
 

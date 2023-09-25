@@ -77,8 +77,8 @@ export const DELETE_COURSE = gql`
 `;
 
 export const GET_COURSES = gql`
-  query getCourses($page: PageInput!){
-    getCourses(page: $page){
+  query getCourses($page: PageInput!, $name: String){
+    getCourses(page: $page, name: $name){
       code
       data{
         id

@@ -1,6 +1,6 @@
 import { IPage } from './page';
 
-export interface IStudent {
+export interface ICourse {
   id: string;
   name: string;
   tel: string;
@@ -8,14 +8,14 @@ export interface IStudent {
   account: string;
 }
 
-export type TStudent = Partial<IStudent>;
+export type TCourse = Partial<ICourse>;
 
-export type TStudentsQuery = {
+export type TCoursesQuery = {
   [key: string]: {
     __typename: 'Query',
     code: number,
     message: string,
-    data: IStudent[],
+    data: ICourse[],
     page: IPage,
   }
 };
