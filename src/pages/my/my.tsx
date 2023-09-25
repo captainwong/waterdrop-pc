@@ -11,9 +11,7 @@ import {
   Col, Form, Row, message,
 } from 'antd';
 import { useUserInfoContext } from '@/hooks/userHooks';
-import { useMutation } from '@apollo/client';
-import { UPDATE_USER_BY_TOKEN } from '@/graphql/user';
-import { TUserMutation } from '@/types/user';
+import { useUpdateUserByToken } from '@/services/user';
 
 export const My = () => {
   const formRef = useRef<ProFormInstance>();
@@ -29,7 +27,7 @@ export const My = () => {
     });
   }, [store]);
 
-  const [updateUserByToken, { loading }] = useMutation<TUserMutation>(UPDATE_USER_BY_TOKEN);
+  const [updateUserByToken, loading] = useUpdateUserByToken();
 
   return (
     <PageContainer>
@@ -47,21 +45,16 @@ export const My = () => {
           },
         }}
         onFinish={async (values) => {
-          const res = await updateUserByToken({
-            variables: {
-              dto: {
-                name: values.name,
-                desc: values.desc,
-                avatar: values.avatar[0]?.url || '',
-              },
-            },
-          });
-          if (res.data?.updateUserByToken?.code === 200) {
+          updateUserByToken(store.id, {
+            name: values.name,
+            desc: values.desc,
+            avatar: values.avatar[0]?.url || '',
+          }, () => {
             store.refetchHandler?.();
             message.success('更新成功');
-          } else {
-            message.error(`更新失败！${res.data?.updateUserByToken?.message}`);
-          }
+          }, (error) => {
+            message.error(`更新失败！${error}`);
+          });
         }}
       >
         <Row gutter={20}>
