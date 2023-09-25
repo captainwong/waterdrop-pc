@@ -1,23 +1,33 @@
 import { gql } from '@apollo/client';
 
-export const GET_USER_INFO = gql`
-  query getUserInfo {
-    getUserInfo {
-      id
-      name
-      desc
-      tel
-      avatar
+export const GET_USER_BY_TOKEN = gql`
+  query getUserByToken{
+    getUserByToken{
+      code
+      message
+      data{
+          name
+          desc
+          tel
+          account
+          avatar
+      }
     }
   }
 `;
 
-export const UPDATE_USER_INFO = gql`
-  mutation updateUserInfo($params: UpdateUserDto!) {
-    updateUserInfo(params: $params) {
+export const UPDATE_USER_BY_TOKEN = gql`
+  mutation updateUserByToken($dto: UpdateUserDto!){
+    updateUserByToken(dto: $dto){
       code
       message
-      data
+      data{
+          name
+          desc
+          tel
+          account
+          avatar
+      }
     }
   }
 `;

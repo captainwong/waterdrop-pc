@@ -12,7 +12,8 @@ import {
 } from 'antd';
 import { useUserInfoContext } from '@/hooks/userHooks';
 import { useMutation } from '@apollo/client';
-import { UPDATE_USER_INFO } from '@/graphql/user';
+import { UPDATE_USER_BY_TOKEN } from '@/graphql/user';
+import { TUserMutation } from '@/types/user';
 
 export const My = () => {
   const formRef = useRef<ProFormInstance>();
@@ -28,7 +29,7 @@ export const My = () => {
     });
   }, [store]);
 
-  const [updateUserInfo, { loading }] = useMutation(UPDATE_USER_INFO);
+  const [updateUserByToken, { loading }] = useMutation<TUserMutation>(UPDATE_USER_BY_TOKEN);
 
   return (
     <PageContainer>
@@ -46,20 +47,20 @@ export const My = () => {
           },
         }}
         onFinish={async (values) => {
-          const res = await updateUserInfo({
+          const res = await updateUserByToken({
             variables: {
-              params: {
+              dto: {
                 name: values.name,
                 desc: values.desc,
                 avatar: values.avatar[0]?.url || '',
               },
             },
           });
-          if (res.data?.updateUserInfo?.code === 200) {
+          if (res.data?.updateUserByToken?.code === 200) {
             store.refetchHandler?.();
             message.success('更新成功');
           } else {
-            message.error(`更新失败！${res.data?.updateUserInfo?.message}`);
+            message.error(`更新失败！${res.data?.updateUserByToken?.message}`);
           }
         }}
       >

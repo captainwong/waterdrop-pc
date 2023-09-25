@@ -1,8 +1,8 @@
 import { useQuery } from '@apollo/client';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { IUser } from '@/types/user';
+import { IUser, TUserQuery } from '@/types/user';
 import { connectFactory, useAppContext } from '../utils/contextFactory';
-import { GET_USER_INFO } from '../graphql/user';
+import { GET_USER_BY_TOKEN } from '../graphql/user';
 
 const USER_INFO = 'USER_INFO';
 const DEFAULT_USER_VALUE = {};
@@ -16,12 +16,12 @@ export const useGetUserInfo = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { loading, refetch } = useQuery<{ getUserInfo: IUser }>(GET_USER_INFO, {
+  const { loading, refetch } = useQuery<TUserQuery>(GET_USER_BY_TOKEN, {
     onCompleted: (data) => {
-      if (data.getUserInfo) {
+      if (data.getUserByToken.data) {
         const {
           id, name, desc, tel, avatar,
-        } = data.getUserInfo;
+        } = data.getUserByToken.data;
         setStore({
           id, name, desc, tel, avatar, refetchHandler: refetch,
         });
