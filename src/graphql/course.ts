@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const CREATE_OR_UPDATE_COURSE = gql`
-  mutation createOrUpdateCourse($dto: CreateCourseDto!, $id: String){
+  mutation createOrUpdateCourse($dto: CourseInputDto!, $id: String){
     createOrUpdateCourse(dto: $dto, id: $id){
       code
       message

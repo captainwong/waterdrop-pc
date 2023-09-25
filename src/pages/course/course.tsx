@@ -8,18 +8,25 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useLasyCourses } from '@/services/course';
 import { getColumns } from './columns';
 import { EditCourse } from './edit/edit';
+import { ReservationTime } from './reservation-time/reservation-time';
 
 export const Course = () => {
   const actionRef = useRef<ActionType>();
   const { getCourses } = useLasyCourses();
   const [curId, setCurId] = useState('');
   const [showEdit, setShowEdit] = useState(false);
+  const [showReservationTime, setShowReservationTime] = useState(false);
 
   console.log(curId);
 
   const onClickAdd = (id?: string) => {
     setCurId(id || '');
     setShowEdit(true);
+  };
+
+  const onClickReservationTime = (id: string) => {
+    setCurId(id);
+    setShowReservationTime(true);
   };
 
   const onEditClose = (shouldReload?: boolean) => {
@@ -36,7 +43,7 @@ export const Course = () => {
         actionRef={actionRef}
         columns={getColumns({
           onEdit: onClickAdd,
-          onReservationTime: onClickAdd,
+          onReservationTime: onClickReservationTime,
         })}
         pagination={{ pageSize: DEFAULT_PAGE_SIZE }}
         toolBarRender={() => [
@@ -47,6 +54,7 @@ export const Course = () => {
         request={(params) => getCourses(params.name, params.current, params.pageSize)}
       />
       {showEdit && <EditCourse id={curId} onClose={onEditClose} /> }
+      {showReservationTime && <ReservationTime id={curId} onClose={onEditClose} /> }
     </PageContainer>
   );
 };

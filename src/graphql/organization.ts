@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const CREATE_OR_UPDATE_ORGANIZATION = gql`
-  mutation createOrUpdateOrganization($dto: CreateOrganizationDto!, $id:String){
+  mutation createOrUpdateOrganization($dto: OrganizationInputDto!, $id:String){
     createOrUpdateOrganization(dto: $dto, id:$id){
       code
       message
