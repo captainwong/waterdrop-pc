@@ -17,6 +17,14 @@ export const CREATE_OR_UPDATE_COURSE = gql`
         cover
         refund
         note
+        resavableTimeSlots{
+          weekday
+          slots{
+            start
+            end
+            key
+          }
+        }
       }
     }
   }
@@ -39,6 +47,14 @@ export const GET_COURSE = gql`
         cover
         refund
         note
+        resavableTimeSlots{
+          weekday
+          slots{
+            start
+            end
+            key
+          }
+        }
       }
     }
   }
@@ -70,6 +86,14 @@ export const GET_COURSES = gql`
         cover
         refund
         note
+        resavableTimeSlots{
+          weekday
+          slots{
+            start
+            end
+            key
+          }
+        }
       }
       page{
         page

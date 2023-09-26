@@ -8,7 +8,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useLasyCourses } from '@/services/course';
 import { getColumns } from './columns';
 import { EditCourse } from './edit/edit';
-import { ReservationTime } from './reservation-time/reservation-time';
+import { ReservationTime } from './reservable-time/reservable-time';
 
 export const Course = () => {
   const actionRef = useRef<ActionType>();
@@ -54,7 +54,8 @@ export const Course = () => {
         request={(params) => getCourses(params.name, params.current, params.pageSize)}
       />
       {showEdit && <EditCourse id={curId} onClose={onEditClose} /> }
-      {showReservationTime && <ReservationTime id={curId} onClose={onEditClose} /> }
+      {showReservationTime
+        && <ReservationTime id={curId} onClose={() => setShowReservationTime(false)} />}
     </PageContainer>
   );
 };

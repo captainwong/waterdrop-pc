@@ -26,7 +26,9 @@ const apolloClient = new ApolloClient({
       fetchPolicy: 'cache-and-network',
     },
   },
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({
+    addTypename: false,
+  }),
 });
 
 export default apolloClient;

@@ -2,9 +2,12 @@ import {
   CREATE_OR_UPDATE_COURSE, GET_COURSE, GET_COURSES,
 } from '@/graphql/course';
 import {
-  TCourse, TCourseMutation, TCourseQuery, TCoursesQuery,
+  ITimeSlot,
+  ITimeSlots,
+  TCourse, TCourseMutation, TCourseQuery, TCoursesQuery, TWeek, WEEKDAYS, isWorkday,
 } from '@/types/course';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import { useMemo } from 'react';
 
 export const useLasyCourses = () => {
   const [get, { loading, error }] = useLazyQuery<TCoursesQuery>(GET_COURSES);
@@ -47,8 +50,12 @@ export const useLasyCourses = () => {
   };
 };
 
-export const useCourse = () => {
-  const { data, loading, refetch } = useQuery<TCourseQuery>(GET_COURSE);
+export const useCourse = (id: string) => {
+  const { data, loading, refetch } = useQuery<TCourseQuery>(GET_COURSE, {
+    variables: {
+      id,
+    },
+  });
   return { course: data?.getCourseInfo.data, loading, refetch };
 };
 
@@ -66,22 +73,22 @@ export const useLazyCourse = () => {
   return { getCourse, loading };
 };
 
-export type TUpdateCourse = (
+export type TCreateOrUpdateCourse = (
   dto: TCourse,
   id?: string,
   onSuccess?: () => void,
   onError?: (error: string) => void,
 ) => void;
 
-export const useCreateOrUpdateCourse = (): [TUpdateCourse, boolean] => {
-  const [update, { loading }] = useMutation<TCourseMutation>(CREATE_OR_UPDATE_COURSE);
+export const useCreateOrUpdateCourse = (): [TCreateOrUpdateCourse, boolean] => {
+  const [commit, { loading }] = useMutation<TCourseMutation>(CREATE_OR_UPDATE_COURSE);
   const commitCourse = async (
     dto: TCourse,
     id?: string,
     onSuccess?: () => void,
     onError?: (error: string) => void,
   ) => {
-    const res = await update({
+    const res = await commit({
       variables: {
         id,
         dto,
@@ -96,4 +103,90 @@ export const useCreateOrUpdateCourse = (): [TUpdateCourse, boolean] => {
   };
 
   return [commitCourse, loading];
+};
+
+interface IReservableTimeSlotsHandlers {
+  save: (ts: ITimeSlot[]) => void;
+  remove: (key: number) => void;
+  syncToWorkdays: () => void;
+  syncToWeekdays: () => void;
+}
+
+export const useReservableTimeSlots = (id: string, weekday: TWeek) => {
+  const { course, loading, refetch } = useCourse(id);
+  const [commitCourse, commitLoading] = useCreateOrUpdateCourse();
+  const timeSlots = useMemo(
+    () => {
+      const rslots = course?.resavableTimeSlots || [];
+      const slots = rslots.find((item) => item.weekday === weekday)?.slots;
+      return slots || [];
+    },
+    [course, weekday],
+  );
+
+  const save = (slots: ITimeSlot[]) => {
+    const rslots = [...(course?.resavableTimeSlots || [])];
+    const index = rslots.findIndex((item) => item.weekday === weekday);
+    if (index > -1) {
+      rslots[index] = {
+        weekday,
+        slots,
+      };
+    } else {
+      rslots.push({
+        weekday,
+        slots,
+      });
+    }
+    commitCourse({
+      resavableTimeSlots: rslots,
+    }, id, () => {
+      refetch();
+    });
+  };
+
+  const remove = (key: number) => {
+    const rslots = timeSlots.filter((item) => item.key !== key);
+    const newSlots = rslots.map((item, index) => ({
+      key: index + 1,
+      start: item.start,
+      end: item.end,
+    }));
+    save(newSlots);
+  };
+
+  const syncToWorkdays = () => {
+    const rslots: ITimeSlots[] = [];
+    WEEKDAYS.forEach((item) => {
+      if (isWorkday(item.key)) {
+        rslots.push({
+          weekday: item.key,
+          slots: timeSlots,
+        });
+      }
+    });
+  };
+
+  const syncToWeekdays = () => {
+    const rslots: ITimeSlots[] = [];
+    WEEKDAYS.forEach((item) => {
+      rslots.push({
+        weekday: item.key,
+        slots: timeSlots,
+      });
+    });
+  };
+
+  const resavableTimeSlotsHandlers: IReservableTimeSlotsHandlers = {
+    save,
+    remove,
+    syncToWorkdays,
+    syncToWeekdays,
+  };
+
+  return {
+    timeSlots,
+    resavableTimeSlotsHandlers,
+    loading: loading || commitLoading,
+  };
 };
