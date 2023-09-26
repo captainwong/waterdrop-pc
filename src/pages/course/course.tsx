@@ -17,8 +17,6 @@ export const Course = () => {
   const [showEdit, setShowEdit] = useState(false);
   const [showReservationTime, setShowReservationTime] = useState(false);
 
-  console.log(curId);
-
   const onClickAdd = (id?: string) => {
     setCurId(id || '');
     setShowEdit(true);

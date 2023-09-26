@@ -1,5 +1,7 @@
 import React from 'react';
-import { HomeOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  HomeOutlined, ReadOutlined, TeamOutlined, UserOutlined,
+} from '@ant-design/icons';
 
 interface IRoute {
   path: string;
@@ -52,7 +54,8 @@ export const ROUTE_CONFIG: Record<string, IRoute> = {
   },
   [ROUTE_KEYS.COURSE]: {
     path: 'course',
-    name: 'Course',
+    name: '课程管理',
+    icon: <ReadOutlined />,
   },
 };
 
