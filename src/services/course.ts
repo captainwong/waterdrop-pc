@@ -165,6 +165,11 @@ export const useReservableTimeSlots = (id: string, weekday: TWeek) => {
         });
       }
     });
+    commitCourse({
+      resavableTimeSlots: rslots,
+    }, id, () => {
+      refetch();
+    });
   };
 
   const syncToWeekdays = () => {
@@ -174,6 +179,11 @@ export const useReservableTimeSlots = (id: string, weekday: TWeek) => {
         weekday: item.key,
         slots: timeSlots,
       });
+    });
+    commitCourse({
+      resavableTimeSlots: rslots,
+    }, id, () => {
+      refetch();
     });
   };
 

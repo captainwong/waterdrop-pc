@@ -1,13 +1,16 @@
 import {
-  Drawer, Space, Tabs,
+  Button,
+  Col,
+  Drawer, Row, Space, Tabs,
 } from 'antd';
 import { EditableProTable } from '@ant-design/pro-components';
 import {
-  ITimeSlot, IWeekday, WEEKDAYS, slotsMaxKey,
+  ITimeSlot, IWeekday, WEEKDAYS, isWorkday, slotsMaxKey,
 } from '@/types/course';
 import { useState } from 'react';
 import { useReservableTimeSlots } from '@/services/course';
 import _ from 'lodash';
+import { SyncOutlined } from '@ant-design/icons';
 import { getColumns } from './columns';
 import styles from './reservable-time.module.less';
 
@@ -79,6 +82,31 @@ export const ReservationTime = ({ id, onClose }: IProps) => {
           },
         }}
       />
+
+      <Row gutter={20} className={styles.footer}>
+        <Col span={12}>
+          <Button
+            className={styles.footerBtn}
+            icon={<SyncOutlined />}
+            type="primary"
+            disabled={!isWorkday(curDay.key)}
+            onClick={() => resavableTimeSlotsHandlers.syncToWorkdays()}
+          >
+            同步至工作日
+          </Button>
+        </Col>
+        <Col span={12}>
+          <Button
+            className={styles.footerBtn}
+            danger
+            icon={<SyncOutlined />}
+            type="primary"
+            onClick={() => resavableTimeSlotsHandlers.syncToWeekdays()}
+          >
+            同步至全周
+          </Button>
+        </Col>
+      </Row>
 
     </Drawer>
   );
