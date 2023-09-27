@@ -5,10 +5,10 @@ import { Button, Space } from 'antd';
 interface IProps {
   onEdit?: (id: string) => void;
   onReservationTime?: (id: string) => void;
-
+  onCard?: (id: string) => void;
 }
 
-export function getColumns({ onEdit, onReservationTime }: IProps): ProColumns<ICourse, 'text'>[] {
+export function getColumns({ onEdit, onReservationTime, onCard }: IProps): ProColumns<ICourse, 'text'>[] {
   return [
     {
       title: '课程名称',
@@ -45,6 +45,13 @@ export function getColumns({ onEdit, onReservationTime }: IProps): ProColumns<IC
             onClick={() => onReservationTime?.(entity.id)}
           >
             可约时间
+          </Button>
+          <Button
+            key="card"
+            type="link"
+            onClick={() => onCard?.(entity.id)}
+          >
+            管理消费卡
           </Button>
         </Space>
       ),

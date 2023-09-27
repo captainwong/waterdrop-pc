@@ -8,6 +8,7 @@ import {
 import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
 import {
   TOrganization,
+  TOrganizationMutation,
   TOrganizationQuery,
   TOrganizationsQuery,
 } from '@/types/organization';
@@ -68,7 +69,7 @@ export type TCreateOrUpdateOrganization = (
 export const useCreateOrUpdateOrganization = (): [
   doCreate: TCreateOrUpdateOrganization, loading: boolean,
 ] => {
-  const [commit, { loading }] = useMutation(CREATE_OR_UPDATE_ORGANIZATION);
+  const [commit, { loading }] = useMutation<TOrganizationMutation>(CREATE_OR_UPDATE_ORGANIZATION);
   const createOrUpdateOrganization = async (
     dto: TOrganization,
     id?: string,
@@ -84,7 +85,7 @@ export const useCreateOrUpdateOrganization = (): [
     if (res.data?.createOrUpdateOrganization.code === 200) {
       onSuccess?.();
     } else {
-      onError?.(res.data?.createOrUpdateOrganization.message);
+      onError?.(res.data?.createOrUpdateOrganization.message || 'error');
     }
   };
 
@@ -98,8 +99,8 @@ export type TDeleteOrganization = (
 ) => void;
 
 export const useDeleteOrganization = () : [TDeleteOrganization, boolean] => {
-  const [remove, { loading }] = useMutation(DELETE_ORGANIZATION);
-  const doDelete = async (
+  const [remove, { loading }] = useMutation<TOrganizationMutation>(DELETE_ORGANIZATION);
+  const deleteOrganization = async (
     id: string,
     onSuccess?: () => void,
     onError?: (error: string) => void,
@@ -112,8 +113,8 @@ export const useDeleteOrganization = () : [TDeleteOrganization, boolean] => {
     if (res.data?.deleteOrganization.code === 200) {
       onSuccess?.();
     } else {
-      onError?.(res.data?.deleteOrganization.message);
+      onError?.(res.data?.deleteOrganization.message || 'error');
     }
   };
-  return [doDelete, loading];
+  return [deleteOrganization, loading];
 };

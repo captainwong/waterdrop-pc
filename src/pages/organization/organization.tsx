@@ -19,7 +19,7 @@ export const Organization = () => {
   const {
     loading, orgs, pagination, refetch,
   } = useOrganizations();
-  const [doDelete, deleteLoading] = useDeleteOrganization();
+  const [deleteOrganization, deleteLoading] = useDeleteOrganization();
 
   const [showEdit, setShowEdit] = useState(false);
   const [curId, setCurId] = useState('');
@@ -30,7 +30,7 @@ export const Organization = () => {
   };
 
   const delInfoHandler = (id: string) => {
-    doDelete(
+    deleteOrganization(
       id,
       () => { message.success('删除成功', 1, () => refetch()); },
       (error: string) => { message.error(`删除失败！${error}`); },

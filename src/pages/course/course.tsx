@@ -9,6 +9,7 @@ import { useLasyCourses } from '@/services/course';
 import { getColumns } from './columns';
 import { EditCourse } from './edit/edit';
 import { ReservationTime } from './reservable-time/reservable-time';
+import { Card } from './card/card';
 
 export const Course = () => {
   const actionRef = useRef<ActionType>();
@@ -16,6 +17,7 @@ export const Course = () => {
   const [curId, setCurId] = useState('');
   const [showEdit, setShowEdit] = useState(false);
   const [showReservationTime, setShowReservationTime] = useState(false);
+  const [showCard, setShowCard] = useState(false);
 
   const onClickAdd = (id?: string) => {
     setCurId(id || '');
@@ -25,6 +27,11 @@ export const Course = () => {
   const onClickReservationTime = (id: string) => {
     setCurId(id);
     setShowReservationTime(true);
+  };
+
+  const onClickCard = (id: string) => {
+    setCurId(id);
+    setShowCard(true);
   };
 
   const onEditClose = (shouldReload?: boolean) => {
@@ -42,6 +49,7 @@ export const Course = () => {
         columns={getColumns({
           onEdit: onClickAdd,
           onReservationTime: onClickReservationTime,
+          onCard: onClickCard,
         })}
         pagination={{ pageSize: DEFAULT_PAGE_SIZE }}
         toolBarRender={() => [
@@ -54,6 +62,7 @@ export const Course = () => {
       {showEdit && <EditCourse id={curId} onClose={onEditClose} /> }
       {showReservationTime
         && <ReservationTime id={curId} onClose={() => setShowReservationTime(false)} />}
+      {showCard && <Card id={curId} onClose={() => setShowCard(false)} />}
     </PageContainer>
   );
 };

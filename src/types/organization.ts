@@ -40,6 +40,14 @@ export type TOrganizationQuery = {
   }
 };
 
+export type TOrganizationMutation = {
+  [key: string]: {
+    __typename: 'Mutation',
+    code: number,
+    message: string,
+  }
+};
+
 export interface ICurrentOrganization {
   id: string;
   name: string;
