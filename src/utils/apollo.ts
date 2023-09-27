@@ -1,6 +1,7 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { AUTH_TOKEN } from './constants';
+import { getCurrentOrganization } from './curorg';
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:3000/graphql',
@@ -15,6 +16,7 @@ const authLink = setContext((_, { headers }) => {
     headers: {
       ...headers,
       authorization: token ? `Bearer ${token}` : '',
+      'organization-id': getCurrentOrganization()?.id || '',
     },
   };
 });

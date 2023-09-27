@@ -15,7 +15,7 @@ export const ROUTE_KEYS = {
   MY: 'my',
   ORGANIZATION: 'organization',
   NO_ORG: 'noOrg',
-  NOT_FOUND: '404',
+  NOT_FOUND: 'notFound',
   STUDENT: 'student',
   COURSE: 'course',
 };
@@ -42,11 +42,6 @@ export const ROUTE_CONFIG: Record<string, IRoute> = {
     name: 'Please select an organization',
     hideInMenu: true,
   },
-  [ROUTE_KEYS.NOT_FOUND]: {
-    path: '*',
-    name: '404',
-    hideInMenu: true,
-  },
   [ROUTE_KEYS.STUDENT]: {
     path: 'student',
     name: '学员管理',
@@ -56,6 +51,11 @@ export const ROUTE_CONFIG: Record<string, IRoute> = {
     path: 'course',
     name: '课程管理',
     icon: <ReadOutlined />,
+  },
+  [ROUTE_KEYS.NOT_FOUND]: {
+    path: '*',
+    name: '404',
+    hideInMenu: true,
   },
 };
 

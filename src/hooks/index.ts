@@ -1,4 +1,4 @@
-import { ROUTES, getRouteByKey } from '@/routes/menu';
+import { ROUTES, ROUTE_CONFIG, getRouteByKey } from '@/routes/menu';
 import { useEffect, useMemo } from 'react';
 import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 
@@ -62,8 +62,15 @@ export const useGoTo = () => {
 export const useMatchedRoute = () => {
   const location = useLocation();
   const route = useMemo(
-    () => ROUTES.find((item) => matchPath(item.path, location.pathname)),
+    () => ROUTES.find((item) => matchPath(`/${item.path}`, location.pathname)),
     [location.pathname],
   );
+  console.log('useMatchedRoute', location.pathname, route?.path);
   return route;
+};
+
+export const useIsCurrentRouteOrganization = () => {
+  const route = useMatchedRoute();
+  console.log(route?.path, ROUTE_CONFIG.organization.path);
+  return route?.path === ROUTE_CONFIG.organization.path;
 };

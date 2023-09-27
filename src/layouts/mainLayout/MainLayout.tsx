@@ -5,7 +5,7 @@ import { LogoutOutlined, ShopOutlined, UserOutlined } from '@ant-design/icons';
 import { Link, useNavigate, useOutlet } from 'react-router-dom';
 import { ROUTES, ROUTE_KEYS } from '@/routes/menu';
 import { AUTH_TOKEN } from '@/utils/constants';
-import { useGoTo } from '@/hooks';
+import { useGoTo, useIsCurrentRouteOrganization } from '@/hooks';
 import { OrganizationSelect } from '@/components/orgSelect/OrganizationSelect';
 import logo from '../../assets/henglogo@2x.png';
 
@@ -18,6 +18,7 @@ export const MainLayout = () => {
   const { store } = useUserInfoContext();
   const navigate = useNavigate();
   const { go } = useGoTo();
+  const isCurrentRouteOrganization = useIsCurrentRouteOrganization();
 
   const logout = () => {
     sessionStorage.removeItem(AUTH_TOKEN);
@@ -64,13 +65,15 @@ export const MainLayout = () => {
       menuItemRender={menuItemRender}
       onMenuHeaderClick={() => navigate('/home')}
       actionsRender={() => [
-        <OrganizationSelect />,
+        !isCurrentRouteOrganization && <OrganizationSelect />,
         <Tooltip title="门店管理">
           <ShopOutlined onClick={() => go(ROUTE_KEYS.ORGANIZATION)} />
         </Tooltip>,
       ]}
     >
-      {outlet}
+      <div key={store.selectedOrganizationId}>
+        {outlet}
+      </div>
     </ProLayout>
   );
 };
