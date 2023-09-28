@@ -45,27 +45,28 @@ export const Teacher = () => {
   };
 
   return (
-    <PageContainer header={{ title: '教师管理' }}>
-      <Card>
-        <Input.Search
-          placeholder="请输入教师姓名"
-          className={styles.search}
-          onSearch={onSearch}
-          enterButton
-          allowClear
-        />
-        <Button
-          className={styles.add}
-          type="primary"
-          onClick={() => onEdit()}
-        >
-          <PlusOutlined />
-          新增教师
-        </Button>
-      </Card>
-      <Spin spinning={loading || deleteLoading}>
-        {teachers.length === 0 && <Result title="暂无教师" />}
-        {
+    <div className={styles.container}>
+      <PageContainer header={{ title: '教师管理' }}>
+        <Card>
+          <Input.Search
+            placeholder="请输入教师姓名"
+            className={styles.search}
+            onSearch={onSearch}
+            enterButton
+            allowClear
+          />
+          <Button
+            className={styles.add}
+            type="primary"
+            onClick={() => onEdit()}
+          >
+            <PlusOutlined />
+            新增教师
+          </Button>
+        </Card>
+        <Spin spinning={loading || deleteLoading}>
+          {teachers.length === 0 && <Result title="暂无教师" />}
+          {
           teachers.map((teacher) => (
             <ProCard
               key={teacher.id}
@@ -100,18 +101,19 @@ export const Teacher = () => {
             </ProCard>
           ))
         }
-        <div className={styles.page}>
-          <Pagination
-            pageSize={pagination?.pageSize}
-            current={pagination?.page}
-            total={pagination?.total}
-            onChange={onPageChange}
-          />
-        </div>
-        {
+          <div className={styles.page}>
+            <Pagination
+              pageSize={pagination?.pageSize}
+              current={pagination?.page}
+              total={pagination?.total}
+              onChange={onPageChange}
+            />
+          </div>
+          {
           showCreate && <CreateTeacher id={curId} onClose={onCreateTeacherClose} />
         }
-      </Spin>
-    </PageContainer>
+        </Spin>
+      </PageContainer>
+    </div>
   );
 };
