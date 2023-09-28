@@ -5,6 +5,7 @@ import { Organization } from '@/pages/organization/organization';
 import { NoOrganization } from '@/pages/noOrganization/NoOrganization';
 import { Student } from '@/pages/student/student';
 import { Course } from '@/pages/course/course';
+import { Product } from '@/pages/product/product';
 import { ROUTE_KEYS } from './menu';
 
 export const ROUTE_COMPONENTS = {
@@ -15,4 +16,5 @@ export const ROUTE_COMPONENTS = {
   [ROUTE_KEYS.NO_ORG]: NoOrganization,
   [ROUTE_KEYS.STUDENT]: Student,
   [ROUTE_KEYS.COURSE]: Course,
+  [ROUTE_KEYS.PRODUCT]: Product,
 };

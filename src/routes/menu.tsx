@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  HomeOutlined, ReadOutlined, TeamOutlined, UserOutlined,
+  HomeOutlined, ReadOutlined, ShoppingOutlined, TeamOutlined, UserOutlined,
 } from '@ant-design/icons';
 
 interface IRoute {
@@ -18,6 +18,7 @@ export const ROUTE_KEYS = {
   NOT_FOUND: 'notFound',
   STUDENT: 'student',
   COURSE: 'course',
+  PRODUCT: 'product',
 };
 
 export const ROUTE_CONFIG: Record<string, IRoute> = {
@@ -51,6 +52,11 @@ export const ROUTE_CONFIG: Record<string, IRoute> = {
     path: 'course',
     name: '课程管理',
     icon: <ReadOutlined />,
+  },
+  [ROUTE_KEYS.PRODUCT]: {
+    path: 'product',
+    name: '商品管理',
+    icon: <ShoppingOutlined />,
   },
   [ROUTE_KEYS.NOT_FOUND]: {
     path: '*',
