@@ -2,7 +2,7 @@ import { CREATE_OR_UPDATE_CARD, DELETE_CARD, GET_CARDS } from '@/graphql/card';
 import {
   TCard, TCardMutation, TCardsQuery,
 } from '@/types/card';
-import { useMutation, useQuery } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 
 export const useCards = (courseId: string) => {
   const { data, loading, refetch } = useQuery<TCardsQuery>(GET_CARDS, {
@@ -10,7 +10,19 @@ export const useCards = (courseId: string) => {
       courseId,
     },
   });
-  return { loading, refetch, cards: data?.getCards.data };
+  return { loading, refetch, cards: data?.getCards.data || [] };
+};
+
+export const useLazyCards = () => {
+  const [get, { data, loading }] = useLazyQuery<TCardsQuery>(GET_CARDS);
+  const getCards = (courseId: string) => get({
+    variables: {
+      courseId,
+    },
+  });
+  return {
+    loading, cards: data?.getCards.data || [], getCards,
+  };
 };
 
 export type TCreateOrUpdateCard = (

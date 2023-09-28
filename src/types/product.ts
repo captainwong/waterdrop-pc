@@ -1,4 +1,4 @@
-import { ICard } from './card';
+import { TCard } from './card';
 import { IPage } from './page';
 
 export interface IProdcutCategory {
@@ -26,7 +26,7 @@ export interface IProduct {
   originalPrice: string;
   cover: string;
   banner: string;
-  cards: ICard[];
+  cards: TCard[];
 }
 
 export type TProduct = Partial<IProduct>;

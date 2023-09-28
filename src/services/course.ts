@@ -1,18 +1,21 @@
 import {
-  CREATE_OR_UPDATE_COURSE, GET_COURSE, GET_COURSES,
+  CREATE_OR_UPDATE_COURSE, GET_COURSE, GET_COURSES, GET_SIMPLE_COURSES,
 } from '@/graphql/course';
 import {
   ITimeSlot,
   ITimeSlots,
   TCourse, TCourseMutation, TCourseQuery, TCoursesQuery, TWeek, WEEKDAYS, isWorkday,
 } from '@/types/course';
+import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { useMemo } from 'react';
 
-export const useLasyCourses = () => {
-  const [get, { loading, error }] = useLazyQuery<TCoursesQuery>(GET_COURSES);
+export const useLazyCourses = () => {
+  const [
+    get, { data, loading, error },
+  ] = useLazyQuery<TCoursesQuery>(GET_COURSES);
 
-  const getCourses = async (name?:string, pageCur?:number, pageSize?:number) => {
+  const getCourses = async (name?:string, pageCur = 1, pageSize = DEFAULT_PAGE_SIZE) => {
     const res = await get({
       variables: {
         name,
@@ -46,6 +49,36 @@ export const useLasyCourses = () => {
 
   return {
     loading,
+    courses: data?.getCourses.data || [],
+    getCourses,
+  };
+};
+
+export const useSimpleCourses = () => {
+  const { data, loading, refetch } = useQuery<TCoursesQuery>(GET_SIMPLE_COURSES, {
+    variables: {
+      page: {
+        page: 1,
+        pageSize: DEFAULT_PAGE_SIZE,
+      },
+    },
+  });
+
+  const getCourses = async (name: string) => {
+    refetch({
+      variables: {
+        name,
+        page: {
+          page: 1,
+          pageSize: DEFAULT_PAGE_SIZE,
+        },
+      },
+    });
+  };
+
+  return {
+    loading,
+    courses: data?.getCourses.data || [],
     getCourses,
   };
 };

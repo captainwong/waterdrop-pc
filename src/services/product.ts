@@ -2,7 +2,7 @@ import {
   CREATE_OR_UPDATE_PRODUCT, DELETE_PRODUCT, GET_PRODUCT, GET_PRODUCTS, GET_PRODUCT_CATEGORY,
 } from '@/graphql/product';
 import {
-  TProduct, TProductCategoryQuery, TProductMutation, TProductsQuery,
+  TProduct, TProductCategoryQuery, TProductMutation, TProductQuery, TProductsQuery,
 } from '@/types/product';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { useMemo } from 'react';
@@ -38,7 +38,7 @@ export const useCreateOrUpdateProduct = ():[TCreateOrUpdateProduct, boolean] => 
 };
 
 export const useProduct = (id: string) => {
-  const { data, loading, refetch } = useQuery(GET_PRODUCT, {
+  const { data, loading, refetch } = useQuery<TProductQuery>(GET_PRODUCT, {
     skip: !id,
     variables: {
       id,
@@ -47,6 +47,7 @@ export const useProduct = (id: string) => {
 
   const newProduct = useMemo(() => ({
     ...data?.getProductInfo.data,
+    cards: data?.getProductInfo.data?.cards || [],
     cover: [{ url: data?.getProductInfo.data?.cover }],
     banner: [{ url: data?.getProductInfo.data?.banner }],
   }), [data]);
@@ -79,7 +80,7 @@ export const useDeleteProduct = ():[TDeleteProduct, boolean] => {
   return [deleteProduct, loading];
 };
 
-export const useLasyProducts = () => {
+export const useLazyProducts = () => {
   const [get, { loading, error }] = useLazyQuery<TProductsQuery>(GET_PRODUCTS);
 
   const getProducts = async (name?:string, pageCur?:number, pageSize?:number) => {

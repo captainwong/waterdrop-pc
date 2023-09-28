@@ -4,7 +4,7 @@ import { useRef, useState } from 'react';
 import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { useCreateOrUpdateProduct, useDeleteProduct, useLasyProducts } from '@/services/product';
+import { useCreateOrUpdateProduct, useDeleteProduct, useLazyProducts } from '@/services/product';
 import { IProduct } from '@/types/product';
 import { getColumns } from './columns';
 import { EditProduct } from './edit/edit';
@@ -15,7 +15,7 @@ export const Product = () => {
   const [curId, setCurId] = useState('');
   const [showEdit, setShowEdit] = useState(false);
   const [showCard, setShowCard] = useState(false);
-  const { getProducts, loading } = useLasyProducts();
+  const { getProducts, loading } = useLazyProducts();
   const [createOrUpdateProduct, createOrUpdateLoading] = useCreateOrUpdateProduct();
   const [deleteProduct, deleteLoading] = useDeleteProduct();
 

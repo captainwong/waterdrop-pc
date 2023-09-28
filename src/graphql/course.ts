@@ -103,3 +103,15 @@ export const GET_COURSES = gql`
     }
   }
 `;
+
+export const GET_SIMPLE_COURSES = gql`
+  query getCourses($page: PageInput!, $name: String){
+    getCourses(page: $page, name: $name){
+      code
+      data{
+        id
+        name
+      }
+    }
+  }
+`;

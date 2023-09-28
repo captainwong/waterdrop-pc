@@ -46,6 +46,13 @@ export const GET_PRODUCT = gql`
         cards{
           id
           name
+          type
+          count
+          duration
+          course{
+            id
+            name
+          }
         }
       }
     }

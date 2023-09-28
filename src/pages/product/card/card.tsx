@@ -1,8 +1,15 @@
-import { CARD_TYPE, ICard } from '@/types/card';
-import { EditableProTable } from '@ant-design/pro-components';
-import { Drawer } from 'antd';
-import { useCards, useCreateOrUpdateCard, useDeleteCard } from '@/services/card';
-import { getColumns } from './columns';
+import { CARD_TYPE, TCard } from '@/types/card';
+import {
+  Modal, Result, Row, Space, Tag, Typography,
+} from 'antd';
+import { useLazyCards } from '@/services/card';
+import { useCreateOrUpdateProduct, useProduct } from '@/services/product';
+import _ from 'lodash';
+import { useEffect, useMemo, useState } from 'react';
+import { CourseSearch } from '@/components/courseSearch/CourseSearch';
+import { CheckCard } from '@ant-design/pro-components';
+import { CreditCardOutlined } from '@ant-design/icons';
+import styles from './card.module.less';
 
 interface IProps {
   id: string;
@@ -10,46 +17,128 @@ interface IProps {
 }
 
 export const Card = ({ id, onClose }: IProps) => {
-  const { cards, loading, refetch } = useCards(id);
-  const [createOrUpdateCard, editLoading] = useCreateOrUpdateCard();
-  const [deleteCard, deleteLoading] = useDeleteCard();
+  const { loading, cards, getCards } = useLazyCards();
+  const { product, loading: productLoading } = useProduct(id);
+  const [updateProduct, updateProductLoading] = useCreateOrUpdateProduct();
+  const [selectedCards, setSelectedCards] = useState<string[]>([]);
+
+  const newCards = useMemo<TCard[]>(() => {
+    return _.unionBy(product?.cards || [], cards || [], 'id');
+  }, [cards, product?.cards]);
+
+  useEffect(() => {
+    const selected:string[] = [];
+    product?.cards?.forEach((card) => {
+      if (card && card.id) {
+        selected.push(card.id);
+      }
+    });
+    setSelectedCards(selected);
+  }, [product?.cards]);
+
+  const onOk = () => {
+    updateProduct({
+      cards: selectedCards.map((item) => ({ id: item })),
+    }, id, () => {
+      onClose();
+    });
+  };
+
+  const onSelect = (courseId: string) => {
+    getCards(courseId);
+  };
+
+  const getCardType = (type: string) => {
+    switch (type) {
+      case CARD_TYPE.COUNT:
+        return <Tag color="blue">次卡</Tag>;
+      case CARD_TYPE.DURATION:
+        return <Tag color="green">日卡</Tag>;
+      default:
+        return '-';
+    }
+  };
 
   return (
-    <Drawer
-      title="管理消费卡"
+    <Modal
+      title="关联消费卡"
+      width="80vw"
       open
-      width={720}
-      onClose={() => onClose()}
+      onOk={onOk}
+      onCancel={() => onClose()}
     >
-      <EditableProTable<ICard>
-        headerTitle="消费卡列表"
-        loading={loading || editLoading || deleteLoading}
-        rowKey="id"
-        recordCreatorProps={{
-          record: () => ({
-            id: 'new',
-            name: '',
-            type: CARD_TYPE.DURATION,
-            duration: 365,
-            count: 20,
-          }),
-        }}
-        value={cards}
-        columns={getColumns()}
-        editable={{
-          onSave: async (_key, record) => {
-            createOrUpdateCard(id, {
-              name: record.name,
-              type: record.type,
-              duration: record.duration,
-              count: record.count,
-            }, record.id === 'new' ? '' : record.id, () => { refetch(); });
-          },
-          onDelete: async (key) => {
-            deleteCard(id, key as string, () => { refetch(); });
-          },
-        }}
-      />
-    </Drawer>
+      <Row justify="end">
+        <CourseSearch onSelected={onSelect} />
+      </Row>
+      <Row justify="center" className={styles.content}>
+        {
+          newCards.length === 0 && (
+            <Result
+              status="warning"
+              title="当前课程无消费卡"
+            />
+          )
+        }
+        <CheckCard.Group
+          multiple
+          loading={loading || productLoading || updateProductLoading}
+          onChange={(val) => {
+            console.log('onChange', val);
+            const ids = val as string[];
+            const tmpCards = newCards.filter((card) => (card && card.id && ids.includes(card.id)));
+            const selectedIds:string[] = [];
+            tmpCards.forEach((card) => {
+              if (card && card.id) {
+                selectedIds.push(card.id);
+              }
+            });
+            setSelectedCards(selectedIds);
+          }}
+          value={selectedCards}
+        >
+          {
+            newCards.map((card) => (
+              <CheckCard
+                size="small"
+                key={card.id}
+                value={card.id}
+                avatar={<CreditCardOutlined />}
+                title={(
+                  <div>
+                    <Space>
+                      <Typography.Text ellipsis className={styles.name}>
+                        {card.course?.name}
+                      </Typography.Text>
+                      {getCardType(card.type || '')}
+                    </Space>
+                    <br />
+                    <Typography.Text ellipsis type="secondary">
+                      {card.name}
+                    </Typography.Text>
+                  </div>
+                )}
+                description={(
+                  <Space>
+                    {
+                      card.type === CARD_TYPE.COUNT && (
+                        <span>
+                          次数：
+                          {card.count}
+                        </span>
+                      )
+                    }
+                    <span>
+                      有效期：
+                      {card.duration}
+                      天
+                    </span>
+                  </Space>
+                )}
+              />
+            ))
+          }
+        </CheckCard.Group>
+      </Row>
+    </Modal>
   );
 };

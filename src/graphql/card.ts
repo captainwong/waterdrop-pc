@@ -48,6 +48,10 @@ export const GET_CARDS = gql`
         type
         count
         duration
+        course{
+          id
+          name
+        }
       }
     }
   }

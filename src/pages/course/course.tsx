@@ -5,7 +5,7 @@ import { useRef, useState } from 'react';
 import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
 import { Button } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { useLasyCourses } from '@/services/course';
+import { useLazyCourses } from '@/services/course';
 import { getColumns } from './columns';
 import { EditCourse } from './edit/edit';
 import { ReservationTime } from './reservable-time/reservable-time';
@@ -13,7 +13,7 @@ import { Card } from './card/card';
 
 export const Course = () => {
   const actionRef = useRef<ActionType>();
-  const { getCourses } = useLasyCourses();
+  const { getCourses } = useLazyCourses();
   const [curId, setCurId] = useState('');
   const [showEdit, setShowEdit] = useState(false);
   const [showReservationTime, setShowReservationTime] = useState(false);
