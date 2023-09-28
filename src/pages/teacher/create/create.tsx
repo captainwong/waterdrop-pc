@@ -43,7 +43,7 @@ export const CreateTeacher = ({ id, onClose }: IProps) => {
       onClose={() => onClose()}
       open
       width="70vw"
-      title="创建教师"
+      title={id ? '编辑教师' : '创建教师'}
       extra={(
         <Space>
           <Button onClick={() => onClose()}>取消</Button>
