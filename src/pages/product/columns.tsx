@@ -32,8 +32,8 @@ export function getColumns({
     {
       title: '商品名',
       dataIndex: 'name',
-      align: 'center',
       ellipsis: true,
+      copyable: true,
       formItemProps: {
         rules: [
           {
@@ -46,27 +46,35 @@ export function getColumns({
     {
       title: '原价',
       dataIndex: 'originalPrice',
+      align: 'center',
       search: false,
     },
     {
       title: '现价',
       dataIndex: 'price',
+      align: 'center',
       search: false,
     },
     {
       title: '库存',
       dataIndex: 'stock',
+      align: 'center',
       search: false,
     },
     {
       title: '销量',
       dataIndex: 'sales',
+      align: 'center',
       search: false,
     },
     {
       title: '限购',
       dataIndex: 'limit',
+      align: 'center',
       search: false,
+      render: (_, entity) => (
+        entity.limit === -1 ? '不限购' : entity.limit
+      ),
     },
     {
       title: '操作',

@@ -7,7 +7,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useCreateOrUpdateProduct, useDeleteProduct, useLasyProducts } from '@/services/product';
 import { IProduct } from '@/types/product';
 import { getColumns } from './columns';
-import { EditCourse } from './edit/edit';
+import { EditProduct } from './edit/edit';
 import { Card } from './card/card';
 
 export const Product = () => {
@@ -65,7 +65,7 @@ export const Product = () => {
           },
         }}
       />
-      {showEdit && <EditCourse id={curId} onClose={onEditClose} /> }
+      {showEdit && <EditProduct id={curId} onClose={onEditClose} /> }
       {showCard && <Card id={curId} onClose={() => setShowCard(false)} />}
     </PageContainer>
   );

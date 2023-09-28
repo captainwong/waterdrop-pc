@@ -14,8 +14,8 @@ export const GET_PRODUCT_CATEGORY = gql`
 `;
 
 export const CREATE_OR_UPDATE_PRODUCT = gql`
-  mutation createOrUpdateProduct($dto: PartialProductInputDto!){
-    createOrUpdateProduct(dto: $dto){
+  mutation createOrUpdateProduct($dto: PartialProductInputDto!, $id: String){
+    createOrUpdateProduct(dto: $dto, id: $id){
       code
       message
     }
@@ -33,6 +33,8 @@ export const GET_PRODUCT = gql`
         desc
         category
         stock
+        sales
+        limit
         price
         originalPrice
         cover
@@ -67,6 +69,8 @@ export const GET_PRODUCTS = gql`
         category
         status
         stock
+        sales
+        limit
         price
         originalPrice
         cover

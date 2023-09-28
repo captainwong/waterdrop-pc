@@ -1,42 +1,33 @@
+import { CategorySelect } from '@/components/categorySelect/CategorySelect';
 import OssImgUploader from '@/components/ossImgUploader/OssImgUploader';
-import { useLazyCourse, useCreateOrUpdateCourse } from '@/services/course';
+import { useCreateOrUpdateProduct, useProduct } from '@/services/product';
 import {
-  Button, Col, Drawer, Form, Input, InputNumber, Row, Space, Spin, message,
+  Button, Col, Divider, Drawer, Form, Input, InputNumber, Row, Space, Spin, message,
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import { useEffect } from 'react';
+import { useState } from 'react';
+import Decimal from 'decimal.js';
 
 interface IProps {
   id: string;
   onClose: (shouldReload?: boolean) => void;
 }
 
-export const EditCourse = ({ id, onClose }: IProps) => {
+export const EditProduct = ({ id, onClose }: IProps) => {
   const [form] = Form.useForm();
-  const [commitCourse, commitCourseLoading] = useCreateOrUpdateCourse();
-  const { getCourse, loading } = useLazyCourse();
-
-  useEffect(() => {
-    const init = async () => {
-      if (id) {
-        const course = await getCourse(id);
-        form.setFieldsValue({
-          ...course,
-          cover: course?.cover ? [{ url: course?.cover }] : [],
-        });
-      } else {
-        form.resetFields();
-      }
-    };
-    init();
-  }, [id]);
+  const [createOrUpdateProduct, createOrUpdateLoading] = useCreateOrUpdateProduct();
+  const { product, loading } = useProduct(id);
+  const [open, setOpen] = useState(true);
 
   const onSubmit = async () => {
     const values = await form.validateFields();
     if (values) {
-      commitCourse({
+      createOrUpdateProduct({
         ...values,
+        price: new Decimal(values.price).toFixed(2),
+        originalPrice: new Decimal(values.originalPrice).toFixed(2),
         cover: values.cover[0].url,
+        banner: values.banner[0].url,
       }, id, () => {
         message.success(id ? '更新成功' : '创建成功');
         onClose(true);
@@ -49,118 +40,128 @@ export const EditCourse = ({ id, onClose }: IProps) => {
   return (
     <Drawer
       title={id ? '编辑课程' : '创建课程'}
-      open
+      open={open}
       width={720}
-      onClose={() => onClose()}
+      onClose={() => setOpen(false)}
+      afterOpenChange={(open_) => { if (!open_) { onClose(); } }}
       extra={(
         <Space>
-          <Button onClick={() => onClose()}>取消</Button>
-          <Button loading={commitCourseLoading} onClick={onSubmit} type="primary">
+          <Button onClick={() => setOpen(false)}>取消</Button>
+          <Button loading={createOrUpdateLoading} onClick={onSubmit} type="primary">
             提交
           </Button>
         </Space>
       )}
     >
       <Spin spinning={loading}>
-        <Form form={form}>
-          <Form.Item
-            label="封面图"
-            name="cover"
-            rules={[{ required: true }]}
-          >
-            <OssImgUploader imgCropAspect={2 / 1} />
-          </Form.Item>
-          <Form.Item
-            label="课程名称"
-            name="name"
-            rules={[{
-              required: true,
-            }]}
-          >
-            <Input />
-          </Form.Item>
-          {/* <Form.Item
-            label="任课老师"
-            name="teachers"
-            rules={[{
-              required: true,
-            }]}
-          >
-            <TeacherSelect />
-          </Form.Item> */}
-          <Form.Item
-            label="课程描述"
-            name="desc"
-            rules={[{
-              required: true,
-            }]}
-          >
-            <TextArea rows={5} showCount maxLength={200} />
-          </Form.Item>
+        { (product || !id) && (
+        <Form form={form} initialValues={product}>
           <Row gutter={20}>
-            <Col>
+            <Col span={16}>
               <Form.Item
-                label="限制人数"
-                name="limit"
-                rules={[{
-                  required: true,
-                }]}
+                style={{ width: '100%' }}
+                label="名称"
+                name="name"
+                rules={[{ required: true }]}
               >
-                <InputNumber min={0} addonAfter="人" />
+                <Input />
               </Form.Item>
             </Col>
-            <Col>
+            <Col span={8}>
               <Form.Item
-                label="持续时长"
-                name="duration"
-                rules={[{
-                  required: true,
-                }]}
+                label="商品分类"
+                name="category"
+                rules={[{ required: true }]}
               >
-                <InputNumber min={0} addonAfter="分钟" />
+                <CategorySelect />
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={20}>
+            <Col span={6}>
+              <Form.Item
+                label="库存"
+                name="stock"
+                rules={[{ required: true }]}
+              >
+                <InputNumber />
+              </Form.Item>
+            </Col>
+            <Col span={6}>
+              <Form.Item
+                label="原价"
+                name="originalPrice"
+                rules={[{ required: true }]}
+              >
+                <InputNumber />
+              </Form.Item>
+            </Col>
+            <Col span={6}>
+              <Form.Item
+                label="现价"
+                name="price"
+                rules={[{ required: true }]}
+              >
+                <InputNumber />
+              </Form.Item>
+            </Col>
+            <Col span={6}>
+              <Form.Item
+                label="限购"
+                name="limit"
+                rules={[{ required: true }]}
+              >
+                <InputNumber />
               </Form.Item>
             </Col>
           </Row>
           <Form.Item
-            label="适龄人群"
-            name="group"
-            rules={[{
-              required: true,
-            }]}
+            label="商品简介"
+            name="desc"
+            rules={[{ required: true }]}
           >
-            <Input />
+            <TextArea
+              maxLength={200}
+              rows={5}
+              allowClear
+              showCount
+            />
           </Form.Item>
-          <Form.Item
-            label="基础能力"
-            name="baseAbility"
-            rules={[{
-              required: true,
-            }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="预约信息"
-            name="reservation"
-            rules={[{
-              required: true,
-            }]}
-          >
-            <TextArea rows={5} showCount maxLength={200} />
-          </Form.Item>
-          <Form.Item
-            label="退款信息"
-            name="refund"
-            rules={[{
-              required: true,
-            }]}
-          >
-            <TextArea rows={5} showCount maxLength={200} />
-          </Form.Item>
-          <Form.Item label="其他信息" name="note">
-            <TextArea rows={5} showCount maxLength={200} />
-          </Form.Item>
+          <Divider>图片设置</Divider>
+          <Row gutter={20}>
+            <Col span={12}>
+              <Form.Item
+                name="cover"
+                label="商品封面图：图片长宽要求比例为 16:9 "
+                rules={[{ required: true }]}
+                labelCol={{
+                  span: 24,
+                }}
+              >
+                <OssImgUploader
+                  maxCount={1}
+                  imgCropAspect={16 / 9}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="banner"
+                label="商品 Banner 横图：图片长宽要求比例为 16:9 "
+                rules={[{ required: true }]}
+                labelCol={{
+                  span: 24,
+                }}
+              >
+                <OssImgUploader
+                  maxCount={1}
+                  imgCropAspect={16 / 9}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
         </Form>
+        )}
       </Spin>
     </Drawer>
   );

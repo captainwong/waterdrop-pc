@@ -20,6 +20,8 @@ export interface IProduct {
   category: string;
   status: string;
   stock: number;
+  sales: number;
+  limit: number;
   price: string;
   originalPrice: string;
   cover: string;

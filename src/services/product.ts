@@ -9,7 +9,7 @@ import { useMemo } from 'react';
 
 export const useProductCategoryList = () => {
   const { data, loading } = useQuery<TProductCategoryQuery>(GET_PRODUCT_CATEGORY);
-  return { categoryList: data?.getProductCategory.data, loading };
+  return { categoryList: data?.getProductCategories.data || [], loading };
 };
 
 export type TCreateOrUpdateProduct = (
@@ -28,7 +28,7 @@ export const useCreateOrUpdateProduct = ():[TCreateOrUpdateProduct, boolean] => 
         dto,
       },
     });
-    if (res.data?.createOrUpdateProduct.code === 0) {
+    if (res.data?.createOrUpdateProduct.code === 200) {
       onSuccess?.();
     } else {
       onError?.(res.data?.createOrUpdateProduct.message || 'error');
