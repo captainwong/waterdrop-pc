@@ -20,8 +20,8 @@ export const CategorySelect = ({ value, onChange }: IProps) => {
       onChange={onChangeHandler}
     >
       {categoryList.map((category) => (
-        <Select.Option key={category.key} value={category.title}>
-          {category.title}
+        <Select.Option key={category.key} value={category.name}>
+          {category.name}
         </Select.Option>
       ))}
     </Select>

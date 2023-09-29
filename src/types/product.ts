@@ -3,7 +3,7 @@ import { IPage } from './page';
 
 export interface IProdcutCategory {
   key: string;
-  title: string;
+  name: string;
 }
 
 export const PRODUCT_STATUS = {
