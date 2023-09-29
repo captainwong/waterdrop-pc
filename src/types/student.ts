@@ -1,4 +1,4 @@
-import { IPage } from './page';
+import { TGraphqlQuery } from './graphql';
 
 export interface IStudent {
   id: string;
@@ -9,13 +9,4 @@ export interface IStudent {
 }
 
 export type TStudent = Partial<IStudent>;
-
-export type TStudentsQuery = {
-  [key: string]: {
-    __typename: 'Query',
-    code: number,
-    message: string,
-    data: IStudent[],
-    page: IPage,
-  }
-};
+export type TStudentsQuery = TGraphqlQuery<IStudent[]>;

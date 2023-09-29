@@ -4,8 +4,9 @@ import {
 import {
   ITimeSlot,
   ITimeSlots,
-  TCourse, TCourseMutation, TCourseQuery, TCoursesQuery, TWeek, WEEKDAYS, isWorkday,
+  TCourse, TCourseQuery, TCoursesQuery, TWeek, WEEKDAYS, isWorkday,
 } from '@/types/course';
+import { TGraphqlMutation } from '@/types/graphql';
 import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { useMemo } from 'react';
@@ -114,7 +115,7 @@ export type TCreateOrUpdateCourse = (
 ) => void;
 
 export const useCreateOrUpdateCourse = (): [TCreateOrUpdateCourse, boolean] => {
-  const [commit, { loading }] = useMutation<TCourseMutation>(CREATE_OR_UPDATE_COURSE);
+  const [commit, { loading }] = useMutation<TGraphqlMutation>(CREATE_OR_UPDATE_COURSE);
   const commitCourse = async (
     dto: TCourse,
     id?: string,

@@ -1,6 +1,7 @@
 import { UPDATE_USER_BY_TOKEN } from '@/graphql/user';
+import { TGraphqlMutation } from '@/types/graphql';
 import {
-  TUser, TUserMutation,
+  TUser,
 } from '@/types/user';
 import { useMutation } from '@apollo/client';
 
@@ -12,7 +13,7 @@ export type TUpdateUserByToken = (
 ) => void;
 
 export const useUpdateUserByToken = ():[TUpdateUserByToken, boolean] => {
-  const [update, { loading }] = useMutation<TUserMutation>(UPDATE_USER_BY_TOKEN);
+  const [update, { loading }] = useMutation<TGraphqlMutation>(UPDATE_USER_BY_TOKEN);
 
   const updateUserByToken = async (
     id: string,

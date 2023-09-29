@@ -8,11 +8,11 @@ import {
 import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
 import {
   TOrganization,
-  TOrganizationMutation,
   TOrganizationQuery,
   TOrganizationsQuery,
 } from '@/types/organization';
 import { useMutation, useQuery } from '@apollo/client';
+import { TGraphqlMutation } from '@/types/graphql';
 
 export const useOrganizations = (
   page = 1,
@@ -69,7 +69,7 @@ export type TCreateOrUpdateOrganization = (
 export const useCreateOrUpdateOrganization = (): [
   doCreate: TCreateOrUpdateOrganization, loading: boolean,
 ] => {
-  const [commit, { loading }] = useMutation<TOrganizationMutation>(CREATE_OR_UPDATE_ORGANIZATION);
+  const [commit, { loading }] = useMutation<TGraphqlMutation>(CREATE_OR_UPDATE_ORGANIZATION);
   const createOrUpdateOrganization = async (
     dto: TOrganization,
     id?: string,
@@ -99,7 +99,7 @@ export type TDeleteOrganization = (
 ) => void;
 
 export const useDeleteOrganization = () : [TDeleteOrganization, boolean] => {
-  const [remove, { loading }] = useMutation<TOrganizationMutation>(DELETE_ORGANIZATION);
+  const [remove, { loading }] = useMutation<TGraphqlMutation>(DELETE_ORGANIZATION);
   const deleteOrganization = async (
     id: string,
     onSuccess?: () => void,

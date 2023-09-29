@@ -1,4 +1,5 @@
 import { ApolloQueryResult, OperationVariables } from '@apollo/client';
+import { TGraphqlQuery } from './graphql';
 
 export type TRefetchUser = ((variables?: Partial<OperationVariables> | undefined)
 => Promise<ApolloQueryResult<TUserQuery>>);
@@ -14,21 +15,4 @@ export interface IUser {
 }
 
 export type TUser = Partial<IUser>;
-
-export type TUserQuery = {
-  [key: string]: {
-    __typename: 'Query',
-    code: number,
-    message: string,
-    data: IUser,
-  }
-};
-
-export type TUserMutation = {
-  [key: string]: {
-    __typename: 'Mutation',
-    code: number,
-    message: string,
-    data: IUser,
-  }
-};
+export type TUserQuery = TGraphqlQuery<IUser>;

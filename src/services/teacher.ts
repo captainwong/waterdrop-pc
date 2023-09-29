@@ -1,8 +1,9 @@
 import {
   CREATE_OR_UPDATE_TEACHER, DELETE_TEACHER, GET_TEACHER, GET_TEACHERS,
 } from '@/graphql/teacher';
+import { TGraphqlMutation } from '@/types/graphql';
 import {
-  TTeacher, TTeacherMutation, TTeacherQuery, TTeachersQuery,
+  TTeacher, TTeacherQuery, TTeachersQuery,
 } from '@/types/teacher';
 import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
@@ -15,7 +16,7 @@ export type TCreateOrUpdateTeacher = (
 ) => void;
 
 export const useCreateOrUpdateTeacher = ():[TCreateOrUpdateTeacher, boolean] => {
-  const [commit, { loading }] = useMutation<TTeacherMutation>(CREATE_OR_UPDATE_TEACHER);
+  const [commit, { loading }] = useMutation<TGraphqlMutation>(CREATE_OR_UPDATE_TEACHER);
   const createOrUpdateTeacher: TCreateOrUpdateTeacher = async (dto, id, onSuccess, onError) => {
     const res = await commit({
       variables: {
@@ -52,7 +53,7 @@ export type TDeleteTeacher = (
 ) => void;
 
 export const useDeleteTeacher = ():[TDeleteTeacher, boolean] => {
-  const [commit, { loading }] = useMutation<TTeacherMutation>(DELETE_TEACHER);
+  const [commit, { loading }] = useMutation<TGraphqlMutation>(DELETE_TEACHER);
   const deleteTeacher: TDeleteTeacher = async (id: string, onSuccess, onError) => {
     const res = await commit({
       variables: {

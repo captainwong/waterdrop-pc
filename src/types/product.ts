@@ -1,5 +1,5 @@
 import { TCard } from './card';
-import { IPage } from './page';
+import { TGraphqlQuery } from './graphql';
 
 export interface IProdcutCategory {
   key: string;
@@ -30,30 +30,9 @@ export interface IProduct {
 }
 
 export type TProduct = Partial<IProduct>;
-
-export type TProductCategoryQuery = {
-  [key: string]: {
-    __typename: 'Query', code: number, message: string, data: IProdcutCategory[]
-  }
-};
-
-export type TProductQuery = {
-  [key: string]: {
-    __typename: 'Query', code: number, message: string, data: IProduct
-  }
-};
-
-export type TProductsQuery = {
-  [key: string]: {
-    __typename: 'Query', code: number, message: string, data: IProduct[], page: IPage
-  }
-};
-
-export type TProductMutation = {
-  [key: string]: {
-    __typename: 'Mutation', code: number, message: string,
-  }
-};
+export type TProductCategoryQuery = TGraphqlQuery<IProdcutCategory[]>;
+export type TProductQuery = TGraphqlQuery<IProduct>;
+export type TProductsQuery = TGraphqlQuery<IProduct[]>;
 
 export interface IBatchOnSale {
   products: string[];

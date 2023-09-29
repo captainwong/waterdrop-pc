@@ -1,4 +1,4 @@
-import { IPage } from './page';
+import { TGraphqlQuery } from './graphql';
 
 export interface ITeacher {
   id: string;
@@ -13,31 +13,5 @@ export interface ITeacher {
 }
 
 export type TTeacher = Partial<ITeacher>;
-
-export type TTeachersQuery = {
-  [key: string]: {
-    __typename: 'Query',
-    code: number,
-    message: string,
-    data: ITeacher[],
-    page: IPage,
-  }
-};
-
-export type TTeacherQuery = {
-  [key: string]: {
-    __typename: 'Query',
-    code: number,
-    message: string,
-    data: ITeacher,
-    page: IPage,
-  }
-};
-
-export type TTeacherMutation = {
-  [key: string]: {
-    __typename: 'Mutation',
-    code: number,
-    message: string,
-  }
-};
+export type TTeachersQuery = TGraphqlQuery<ITeacher[]>;
+export type TTeacherQuery = TGraphqlQuery<ITeacher>;

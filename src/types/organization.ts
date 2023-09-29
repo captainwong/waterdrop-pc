@@ -1,5 +1,5 @@
+import { TGraphqlQuery } from './graphql';
 import { IMedia } from './media';
-import { IPage } from './page';
 
 export interface IOrganization {
   id: string;
@@ -20,33 +20,8 @@ export interface IOrganization {
 }
 
 export type TOrganization = Partial<IOrganization>;
-
-export type TOrganizationsQuery = {
-  [key: string]: {
-    __typename: 'Query',
-    code: number,
-    message: string,
-    data: IOrganization[],
-    page: IPage,
-  }
-};
-
-export type TOrganizationQuery = {
-  [key: string]: {
-    __typename: 'Query',
-    code: number,
-    message: string,
-    data: IOrganization,
-  }
-};
-
-export type TOrganizationMutation = {
-  [key: string]: {
-    __typename: 'Mutation',
-    code: number,
-    message: string,
-  }
-};
+export type TOrganizationQuery = TGraphqlQuery<IOrganization>;
+export type TOrganizationsQuery = TGraphqlQuery<IOrganization[]>;
 
 export interface ICurrentOrganization {
   id: string;

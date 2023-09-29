@@ -2,9 +2,10 @@ import {
   BATCH_ON_SALE,
   CREATE_OR_UPDATE_PRODUCT, DELETE_PRODUCT, GET_PRODUCT, GET_PRODUCTS, GET_PRODUCT_CATEGORY,
 } from '@/graphql/product';
+import { TGraphqlMutation } from '@/types/graphql';
 import {
   IBatchOnSale,
-  TProduct, TProductCategoryQuery, TProductMutation, TProductQuery, TProductsQuery,
+  TProduct, TProductCategoryQuery, TProductQuery, TProductsQuery,
 } from '@/types/product';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { useMemo } from 'react';
@@ -23,7 +24,7 @@ export type TCreateOrUpdateProduct = (
 ) => void;
 
 export const useCreateOrUpdateProduct = ():[TCreateOrUpdateProduct, boolean] => {
-  const [commit, { loading }] = useMutation<TProductMutation>(CREATE_OR_UPDATE_PRODUCT);
+  const [commit, { loading }] = useMutation<TGraphqlMutation>(CREATE_OR_UPDATE_PRODUCT);
   const createOrUpdateProduct: TCreateOrUpdateProduct = async (dto, id, onSuccess, onError) => {
     const res = await commit({
       variables: {
@@ -47,7 +48,7 @@ export type TBatchOnSale = (
 ) => void;
 
 export const useBatchOnSale = (): [TBatchOnSale, boolean] => {
-  const [commit, { loading }] = useMutation<TProductMutation>(BATCH_ON_SALE);
+  const [commit, { loading }] = useMutation<TGraphqlMutation>(BATCH_ON_SALE);
   const batchOnSale: TBatchOnSale = async (dto, onSuccess, onError) => {
     const res = await commit({
       variables: {
@@ -90,7 +91,7 @@ export type TDeleteProduct = (
 ) => void;
 
 export const useDeleteProduct = ():[TDeleteProduct, boolean] => {
-  const [commit, { loading }] = useMutation<TProductMutation>(DELETE_PRODUCT);
+  const [commit, { loading }] = useMutation<TGraphqlMutation>(DELETE_PRODUCT);
   const deleteProduct: TDeleteProduct = async (id: string, onSuccess, onError) => {
     const res = await commit({
       variables: {

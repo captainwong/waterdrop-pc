@@ -1,4 +1,4 @@
-import { IPage } from './page';
+import { TGraphqlQuery } from './graphql';
 
 export type TWeek =
   | 'monday'
@@ -82,31 +82,5 @@ export interface ICourse {
 }
 
 export type TCourse = Partial<ICourse>;
-
-export type TCourseQuery = {
-  [key: string]: {
-    __typename: 'Query',
-    code: number,
-    message: string,
-    data: ICourse,
-  }
-};
-
-export type TCoursesQuery = {
-  [key: string]: {
-    __typename: 'Query',
-    code: number,
-    message: string,
-    data: ICourse[],
-    page: IPage,
-  }
-};
-
-export type TCourseMutation = {
-  [key: string]: {
-    __typename: 'Mutation',
-    code: number,
-    message: string,
-    data: ICourse,
-  }
-};
+export type TCourseQuery = TGraphqlQuery<ICourse>;
+export type TCoursesQuery = TGraphqlQuery<ICourse[]>;
