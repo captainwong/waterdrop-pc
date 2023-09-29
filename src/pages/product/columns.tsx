@@ -44,6 +44,12 @@ export function getColumns({
       },
     },
     {
+      title: '分类',
+      dataIndex: 'category',
+      align: 'center',
+      search: false,
+    },
+    {
       title: '原价',
       dataIndex: 'originalPrice',
       align: 'center',

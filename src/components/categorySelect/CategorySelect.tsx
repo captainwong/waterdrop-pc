@@ -7,16 +7,20 @@ interface IProps {
 }
 
 export const CategorySelect = ({ value, onChange }: IProps) => {
-  const { categoryList } = useProductCategoryList();
+  const { categoryList, loading } = useProductCategoryList();
 
   const onChangeHandler = (val: string) => {
-    onChange?.(val);
+    const key = categoryList.find((item) => item.name === val)?.key;
+    if (key) onChange?.(key);
   };
+
+  console.log('CategorySelect.value', value);
 
   return (
     <Select
+      loading={loading}
       placeholder="请选择商品分类"
-      value={value}
+      value={categoryList.find((item) => item.key === value)?.name}
       onChange={onChangeHandler}
     >
       {categoryList.map((category) => (
