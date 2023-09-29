@@ -103,3 +103,12 @@ export const DELETE_PRODUCT = gql`
     }
   }
 `;
+
+export const BATCH_ON_SALE = gql`
+  mutation productBatchOnSale($dto: BatchOnSaleInput!){
+    productBatchOnSale(dto: $dto){
+      code
+      message
+    }
+  }
+`;

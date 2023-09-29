@@ -4,13 +4,14 @@ import { Button, Image, Space } from 'antd';
 import styles from './product.module.less';
 
 interface IProps {
+  getCategoryName: (key: string) => string;
   onEdit?: (id: string) => void;
   onLinkCard?: (id: string) => void;
   onChageStatus: (id: string, status: string) => void;
 }
 
 export function getColumns({
-  onEdit, onLinkCard, onChageStatus,
+  getCategoryName, onEdit, onLinkCard, onChageStatus,
 }: IProps): ProColumns<IProduct, 'text'>[] {
   return [
     {
@@ -19,6 +20,7 @@ export function getColumns({
       valueType: 'indexBorder',
       search: false,
       align: 'center',
+      width: 30,
     },
     {
       title: '封面',
@@ -48,12 +50,14 @@ export function getColumns({
       dataIndex: 'category',
       align: 'center',
       search: false,
+      render: (_, entity) => (getCategoryName(entity.category)),
     },
     {
       title: '原价',
       dataIndex: 'originalPrice',
       align: 'center',
       search: false,
+      width: 100,
     },
     {
       title: '现价',
@@ -94,7 +98,7 @@ export function getColumns({
             entity.status === PRODUCT_STATUS.NOT_FOR_SAIL ?
               (
                 <Button
-                  className={styles.options}
+                  className={styles.on_sale}
                   key="on_sail"
                   type="link"
                   onClick={() => onChageStatus?.(entity.id, PRODUCT_STATUS.ON_SAIL)}
@@ -104,7 +108,7 @@ export function getColumns({
               )
               : (
                 <Button
-                  className={styles.options}
+                  className={styles.not_for_sale}
                   key="not_for_sail"
                   type="link"
                   onClick={() => onChageStatus?.(entity.id, PRODUCT_STATUS.NOT_FOR_SAIL)}

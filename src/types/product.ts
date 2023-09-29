@@ -54,3 +54,8 @@ export type TProductMutation = {
     __typename: 'Mutation', code: number, message: string,
   }
 };
+
+export interface IBatchOnSale {
+  products: string[];
+  onSale: boolean;
+}

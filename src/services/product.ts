@@ -1,7 +1,9 @@
 import {
+  BATCH_ON_SALE,
   CREATE_OR_UPDATE_PRODUCT, DELETE_PRODUCT, GET_PRODUCT, GET_PRODUCTS, GET_PRODUCT_CATEGORY,
 } from '@/graphql/product';
 import {
+  IBatchOnSale,
   TProduct, TProductCategoryQuery, TProductMutation, TProductQuery, TProductsQuery,
 } from '@/types/product';
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
@@ -9,7 +11,8 @@ import { useMemo } from 'react';
 
 export const useProductCategoryList = () => {
   const { data, loading } = useQuery<TProductCategoryQuery>(GET_PRODUCT_CATEGORY);
-  return { categoryList: data?.getProductCategories.data || [], loading };
+  const categoryList = useMemo(() => data?.getProductCategories.data || [], [data]);
+  return { categoryList, loading };
 };
 
 export type TCreateOrUpdateProduct = (
@@ -35,6 +38,29 @@ export const useCreateOrUpdateProduct = ():[TCreateOrUpdateProduct, boolean] => 
     }
   };
   return [createOrUpdateProduct, loading];
+};
+
+export type TBatchOnSale = (
+  dto: IBatchOnSale,
+  onSuccess?: () => void,
+  onError?: (error: string) => void,
+) => void;
+
+export const useBatchOnSale = (): [TBatchOnSale, boolean] => {
+  const [commit, { loading }] = useMutation<TProductMutation>(BATCH_ON_SALE);
+  const batchOnSale: TBatchOnSale = async (dto, onSuccess, onError) => {
+    const res = await commit({
+      variables: {
+        dto,
+      },
+    });
+    if (res.data?.productBatchOnSale.code === 200) {
+      onSuccess?.();
+    } else {
+      onError?.(res.data?.productBatchOnSale.message || 'error');
+    }
+  };
+  return [batchOnSale, loading];
 };
 
 export const useProduct = (id: string) => {
