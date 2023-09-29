@@ -55,27 +55,15 @@ export const Product = () => {
     }
   };
 
-  const makeAllOnSale = () => {
+  const makeAllOnSale = (onSale: boolean) => {
     batchOnSale({
       products: curIds,
-      onSale: true,
+      onSale,
     }, () => {
-      message.success('批量上架成功');
+      message.success(onSale ? '批量上架成功' : '批量下架成功');
       actionRef.current?.reload();
     }, (error) => {
-      message.error(`批量上架失败：${error}`);
-    });
-  };
-
-  const makeAllNotForSale = () => {
-    batchOnSale({
-      products: curIds,
-      onSale: false,
-    }, () => {
-      message.success('批量下架成功');
-      actionRef.current?.reload();
-    }, (error) => {
-      message.error(`批量下架失败：${error}`);
+      message.error(onSale ? `批量上架失败：${error}` : `批量下架失败：${error}`);
     });
   };
 
@@ -95,12 +83,26 @@ export const Product = () => {
         })}
         pagination={{ pageSize: DEFAULT_PAGE_SIZE }}
         toolBarRender={() => [
-          <Button className={styles.on_sale} key="all_on_sale" onClick={() => makeAllOnSale()} type="primary" icon={<VerticalAlignTopOutlined />}>
+          <Button
+            className={styles.on_sale}
+            key="all_on_sale"
+            onClick={() => makeAllOnSale(true)}
+            type="dashed"
+            icon={<VerticalAlignTopOutlined />}
+          >
             本页商品全部上架
           </Button>,
-          <Button className={styles.not_for_sale} key="all_not_for_sale" onClick={() => makeAllNotForSale()} type="primary" icon={<VerticalAlignBottomOutlined />}>
+
+          <Button
+            className={styles.not_for_sale}
+            key="all_not_for_sale"
+            onClick={() => makeAllOnSale(false)}
+            type="dashed"
+            icon={<VerticalAlignBottomOutlined />}
+          >
             本页商品全部下架
           </Button>,
+
           <Button key="add" onClick={() => onEdit()} type="primary" icon={<PlusOutlined />}>
             新建
           </Button>,
