@@ -39,7 +39,7 @@ const Login: React.FC = () => {
       },
     });
     if (res.data?.login?.code === 200) {
-      store.refetchHandler?.();
+      store.refetch?.();
       if (values.autoLogin) {
         sessionStorage.setItem(AUTH_TOKEN, '');
         localStorage.setItem(AUTH_TOKEN, res.data?.login?.data || '');
