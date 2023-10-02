@@ -50,14 +50,14 @@ module.exports = (plop) => {
       },
       {
         type: 'modify',
-        path: './src/routes/index.tsx',
+        path: './src/routes/index.ts',
         pattern: /export const ROUTE_COMPONENTS = {([^}]*)/g,
         template:
           "export const ROUTE_COMPONENTS = {$1  [ROUTE_KEYS.{{constantCase name}}]: {{pascalCase name}},\n",
       },
       {
         type: 'modify',
-        path: './src/routes/index.tsx',
+        path: './src/routes/index.ts',
         pattern: /import { ROUTE_KEYS } from \'\.\/menu\'/g,
         template:
           "import { {{pascalCase name}} } from '@/pages/{{kebabCase name}}/{{kebabCase name}}';\nimport { ROUTE_KEYS } from './menu'",

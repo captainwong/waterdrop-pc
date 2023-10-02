@@ -39,7 +39,7 @@ export const EditProduct = ({ id, onClose }: IProps) => {
 
   return (
     <Drawer
-      title={id ? '编辑课程' : '创建课程'}
+      title={id ? '编辑商品' : '创建商品'}
       open={open}
       width={720}
       onClose={() => setOpen(false)}

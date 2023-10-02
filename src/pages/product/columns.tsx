@@ -34,6 +34,7 @@ export function getColumns({
     {
       title: '商品名',
       dataIndex: 'name',
+      width: 200,
       ellipsis: true,
       copyable: true,
       formItemProps: {

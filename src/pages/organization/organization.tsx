@@ -61,9 +61,15 @@ export const Organization = () => {
   const dataSource = orgs?.map((item) => ({
     ...item,
     key: item.id,
-    subTitle: <div>{item.tags?.split(',').map((tag) => (<Tag key={tag} color="#5bd8a6">{tag}</Tag>))}</div>,
+    subTitle: (
+      <div>
+        {item.tags?.split(',').map((tag) => (
+          <Tag className={styles.tag} key={tag} color="#5bd8a6">{tag}</Tag>
+        ))}
+      </div>
+    ),
     actions: [
-      <Button type="link" onClick={() => editInfoHandler(item.id)}>
+      <Button className={styles.button} type="link" onClick={() => editInfoHandler(item.id)}>
         <EditOutlined />
         {' '}
         编辑
@@ -74,7 +80,7 @@ export const Organization = () => {
         okButtonProps={{ danger: true, loading: deleteLoading }}
         onConfirm={() => delInfoHandler(item.id)}
       >
-        <Button type="link" danger>
+        <Button className={styles.button} type="link" danger>
           <DeleteOutlined />
           删除
         </Button>
