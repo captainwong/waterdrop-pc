@@ -14,7 +14,7 @@ import { useTitle } from '@/hooks';
 import { useUserInfoContext } from '@/hooks/userHooks';
 import { SEND_VERIFICATION_CODE, LOGIN } from '../../graphql/auth';
 import { AUTH_TOKEN } from '../../utils/constants';
-import styles from './login.module.less';
+import styles from './Login.module.less';
 // import logo from '../../assets/henglogo@2x.png'
 
 interface IValue {
@@ -115,7 +115,7 @@ const Login: React.FC = () => {
                 res.data?.sendVerificationCode?.code === 200 ||
                 res.data?.sendVerificationCode?.code === 10001
               ) {
-                message.success('获取验证码成功！');
+                message.success(res.data?.sendVerificationCode.message || '获取验证码成功！');
               } else {
                 message.error(
                   `获取验证码失败！${res.data?.sendVerificationCode?.message}`,

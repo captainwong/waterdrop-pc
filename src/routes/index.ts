@@ -1,6 +1,6 @@
-import { Home } from '@/pages/home/home';
+import { Home } from '@/pages/home/Home';
 import { My } from '@/pages/my/my';
-import { NotFound } from '@/pages/404/notFound';
+import { NotFound } from '@/pages/404/NotFound';
 import { Organization } from '@/pages/organization/organization';
 import { NoOrganization } from '@/pages/noOrganization/NoOrganization';
 import { Student } from '@/pages/student/student';
