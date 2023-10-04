@@ -11,7 +11,7 @@ import {
   useCreateOrUpdateProduct, useDeleteProduct, useLazyProducts, useProductCategoryList,
 } from '@/services/product';
 import { IProduct } from '@/types/product';
-import { getColumns } from './columns';
+import { IValueEnum, getColumns } from './columns';
 import { EditProduct } from './edit/edit';
 import { Card } from './card/card';
 import styles from './product.module.less';
@@ -25,7 +25,7 @@ export const Product = () => {
   const { getProducts, loading } = useLazyProducts();
   const [createOrUpdateProduct, createOrUpdateLoading] = useCreateOrUpdateProduct();
   const [deleteProduct, deleteLoading] = useDeleteProduct();
-  const { categoryList } = useProductCategoryList();
+  const { categoryList, loading: categoryListLoading } = useProductCategoryList();
   const [batchOnSale, batchLoading] = useBatchOnSale();
   const [curIds, setCurIds] = useState<string[]>([]);
 
@@ -67,6 +67,22 @@ export const Product = () => {
     });
   };
 
+  if (categoryListLoading) {
+    return null;
+  }
+
+  const categories = categoryList.reduce<IValueEnum>((acc, item) => {
+    acc[item.key] = {
+      text: item.name,
+    };
+    return acc;
+  }, {});
+
+  const onRequest = (params: any) => {
+    console.log('onRequest', { params });
+    return getProducts(params.name, params.category, params.current, params.pageSize);
+  };
+
   return (
     <PageContainer header={{ title: '当前门店下的商品' }}>
       <ProTable<IProduct>
@@ -74,8 +90,11 @@ export const Product = () => {
         actionRef={actionRef}
         form={{ ignoreRules: false }}
         formRef={formRef}
-        loading={loading || createOrUpdateLoading || deleteLoading || batchLoading}
+        loading={
+          loading || createOrUpdateLoading || deleteLoading || batchLoading || categoryListLoading
+        }
         columns={getColumns({
+          categories,
           getCategoryName,
           onEdit,
           onLinkCard,
@@ -107,7 +126,7 @@ export const Product = () => {
             新建
           </Button>,
         ]}
-        request={(params) => getProducts(params.name, params.current, params.pageSize)}
+        request={onRequest}
         editable={{
           onDelete: async (id) => {
             deleteProduct(id as string, () => { actionRef.current?.reload(); });

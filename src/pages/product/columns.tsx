@@ -3,7 +3,14 @@ import { ProColumns } from '@ant-design/pro-components';
 import { Button, Image, Space } from 'antd';
 import styles from './product.module.less';
 
+export interface IValueEnum {
+  [key: string]: {
+    text: string;
+  }
+}
+
 interface IProps {
+  categories: IValueEnum;
   getCategoryName: (key: string) => string;
   onEdit?: (id: string) => void;
   onLinkCard?: (id: string) => void;
@@ -11,7 +18,7 @@ interface IProps {
 }
 
 export function getColumns({
-  getCategoryName, onEdit, onLinkCard, onChageStatus,
+  categories, getCategoryName, onEdit, onLinkCard, onChageStatus,
 }: IProps): ProColumns<IProduct, 'text'>[] {
   return [
     {
@@ -37,21 +44,24 @@ export function getColumns({
       width: 200,
       ellipsis: true,
       copyable: true,
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            message: '商品名不能为空',
-          },
-        ],
-      },
+      // formItemProps: {
+      //   rules: [
+      //     {
+      //       required: true,
+      //       message: '商品名不能为空',
+      //     },
+      //   ],
+      // },
     },
     {
       title: '分类',
       dataIndex: 'category',
       align: 'center',
-      search: false,
+      filters: true,
+      onFilter: true,
+      valueType: 'select',
       render: (_, entity) => (getCategoryName(entity.category)),
+      valueEnum: categories,
     },
     {
       title: '原价',

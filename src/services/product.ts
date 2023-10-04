@@ -110,10 +110,19 @@ export const useDeleteProduct = ():[TDeleteProduct, boolean] => {
 export const useLazyProducts = () => {
   const [get, { loading, error }] = useLazyQuery<TProductsQuery>(GET_PRODUCTS);
 
-  const getProducts = async (name?:string, pageCur?:number, pageSize?:number) => {
+  const getProducts = async (
+    name?: string,
+    category?: string,
+    pageCur?: number,
+    pageSize?: number,
+  ) => {
+    console.log('getProducts', {
+      name, category, pageCur, pageSize,
+    });
     const res = await get({
       variables: {
         name,
+        category,
         page: {
           page: pageCur,
           pageSize,
