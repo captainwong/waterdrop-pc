@@ -30,6 +30,7 @@ module.exports = {
     'operator-linebreak': 0,
     'prettier/prettier': 0,
     '@typescript-eslint/no-explicit-any': 0,
+    '@typescript-eslint/no-unused-vars': 'warn',
   },
   settings: {
     react: {

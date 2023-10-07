@@ -15,6 +15,9 @@ export const getColumns = (): ProColumns[] => [
     valueType: 'time',
     width: 160,
     align: 'center',
+    render: (_1, record) => {
+      return record.start;
+    },
   },
   {
     title: '结束时间',
@@ -22,6 +25,9 @@ export const getColumns = (): ProColumns[] => [
     valueType: 'time',
     width: 160,
     align: 'center',
+    render: (_1, record) => {
+      return record.end;
+    },
   },
   {
     title: '操作',

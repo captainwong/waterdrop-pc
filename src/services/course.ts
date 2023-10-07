@@ -151,7 +151,7 @@ export const useReservableTimeSlots = (id: string, weekday: TWeek) => {
   const [commitCourse, commitLoading] = useCreateOrUpdateCourse();
   const timeSlots = useMemo(
     () => {
-      const rslots = course?.resavableTimeSlots || [];
+      const rslots = course?.reservableTimeSlots || [];
       const slots = rslots.find((item) => item.weekday === weekday)?.slots;
       return slots || [];
     },
@@ -159,7 +159,7 @@ export const useReservableTimeSlots = (id: string, weekday: TWeek) => {
   );
 
   const save = (slots: ITimeSlot[]) => {
-    const rslots = [...(course?.resavableTimeSlots || [])];
+    const rslots = [...(course?.reservableTimeSlots || [])];
     const index = rslots.findIndex((item) => item.weekday === weekday);
     if (index > -1) {
       rslots[index] = {
@@ -173,7 +173,7 @@ export const useReservableTimeSlots = (id: string, weekday: TWeek) => {
       });
     }
     commitCourse({
-      resavableTimeSlots: rslots,
+      reservableTimeSlots: rslots,
     }, id, () => {
       refetch();
     });
@@ -200,7 +200,7 @@ export const useReservableTimeSlots = (id: string, weekday: TWeek) => {
       }
     });
     commitCourse({
-      resavableTimeSlots: rslots,
+      reservableTimeSlots: rslots,
     }, id, () => {
       refetch();
     });
@@ -215,7 +215,7 @@ export const useReservableTimeSlots = (id: string, weekday: TWeek) => {
       });
     });
     commitCourse({
-      resavableTimeSlots: rslots,
+      reservableTimeSlots: rslots,
     }, id, () => {
       refetch();
     });

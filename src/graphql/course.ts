@@ -25,7 +25,7 @@ export const CREATE_OR_UPDATE_COURSE = gql`
           id
           name
         }
-        resavableTimeSlots{
+        reservableTimeSlots{
           weekday
           slots{
             start
@@ -63,7 +63,7 @@ export const GET_COURSE = gql`
           id
           name
         }
-        resavableTimeSlots{
+        reservableTimeSlots{
           weekday
           slots{
             start
@@ -110,7 +110,7 @@ export const GET_COURSES = gql`
           id
           name
         }
-        resavableTimeSlots{
+        reservableTimeSlots{
           weekday
           slots{
             start

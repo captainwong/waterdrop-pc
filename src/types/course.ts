@@ -79,7 +79,7 @@ export interface ICourse {
   refund?: string;
   note?: string;
   cover: string;
-  resavableTimeSlots: ITimeSlots[];
+  reservableTimeSlots: ITimeSlots[];
   teachers: ITeacher[];
 }
 
