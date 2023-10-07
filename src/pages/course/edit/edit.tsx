@@ -1,9 +1,11 @@
 import OssImgUploader from '@/components/ossImgUploader/OssImgUploader';
+import { TeacherSelect } from '@/components/teacherSelect/TeacherSelect';
 import { useLazyCourse, useCreateOrUpdateCourse } from '@/services/course';
 import {
   Button, Col, Drawer, Form, Input, InputNumber, Row, Space, Spin, message,
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import { LabeledValue } from 'antd/es/select';
 import { useEffect } from 'react';
 
 interface IProps {
@@ -23,6 +25,9 @@ export const EditCourse = ({ id, onClose }: IProps) => {
         form.setFieldsValue({
           ...course,
           cover: course?.cover ? [{ url: course?.cover }] : [],
+          teachers: course?.teachers?.map((teacher) => ({
+            label: teacher.name, value: teacher.id,
+          })),
         });
       } else {
         form.resetFields();
@@ -37,6 +42,7 @@ export const EditCourse = ({ id, onClose }: IProps) => {
       commitCourse({
         ...values,
         cover: values.cover[0].url,
+        teachers: values.teachers?.map((teacher: LabeledValue) => teacher.value),
       }, id, () => {
         message.success(id ? '更新成功' : '创建成功');
         onClose(true);
@@ -79,7 +85,7 @@ export const EditCourse = ({ id, onClose }: IProps) => {
           >
             <Input />
           </Form.Item>
-          {/* <Form.Item
+          <Form.Item
             label="任课老师"
             name="teachers"
             rules={[{
@@ -87,7 +93,7 @@ export const EditCourse = ({ id, onClose }: IProps) => {
             }]}
           >
             <TeacherSelect />
-          </Form.Item> */}
+          </Form.Item>
           <Form.Item
             label="课程描述"
             name="desc"

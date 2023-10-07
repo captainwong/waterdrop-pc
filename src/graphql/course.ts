@@ -17,6 +17,14 @@ export const CREATE_OR_UPDATE_COURSE = gql`
         cover
         refund
         note
+        teachers{
+          id
+          name
+        }
+        organization {
+          id
+          name
+        }
         resavableTimeSlots{
           weekday
           slots{
@@ -47,6 +55,14 @@ export const GET_COURSE = gql`
         cover
         refund
         note
+        teachers{
+          id
+          name
+        }
+        organization {
+          id
+          name
+        }
         resavableTimeSlots{
           weekday
           slots{
@@ -86,6 +102,14 @@ export const GET_COURSES = gql`
         cover
         refund
         note
+        teachers{
+          id
+          name
+        }
+        organization {
+          id
+          name
+        }
         resavableTimeSlots{
           weekday
           slots{

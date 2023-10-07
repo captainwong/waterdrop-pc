@@ -1,4 +1,5 @@
 import { TGraphqlQuery } from './graphql';
+import { ITeacher } from './teacher';
 
 export type TWeek =
   | 'monday'
@@ -79,6 +80,7 @@ export interface ICourse {
   note?: string;
   cover: string;
   resavableTimeSlots: ITimeSlots[];
+  teachers: ITeacher[];
 }
 
 export type TCourse = Partial<ICourse>;

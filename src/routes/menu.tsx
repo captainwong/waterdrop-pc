@@ -11,7 +11,7 @@ interface IRoute {
 }
 
 export const ROUTE_KEYS = {
-  HOME: 'home',
+  HOME: '/',
   MY: 'my',
   ORGANIZATION: 'organization',
   NO_ORG: 'noOrg',
@@ -24,9 +24,10 @@ export const ROUTE_KEYS = {
 
 export const ROUTE_CONFIG: Record<string, IRoute> = {
   [ROUTE_KEYS.HOME]: {
-    path: 'home',
+    path: '/',
     name: '主页',
     icon: <HomeOutlined />,
+    hideInMenu: true,
   },
   [ROUTE_KEYS.MY]: {
     path: 'my',

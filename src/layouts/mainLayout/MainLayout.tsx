@@ -63,7 +63,7 @@ export const MainLayout = () => {
         routes: ROUTES,
       }}
       menuItemRender={menuItemRender}
-      onMenuHeaderClick={() => navigate('/home')}
+      onMenuHeaderClick={() => navigate('/')}
       actionsRender={() => [
         !isCurrentRouteOrganization && <OrganizationSelect />,
         <Tooltip title="门店管理">
