@@ -83,7 +83,7 @@ export const Teacher = () => {
                 </Popconfirm>,
               ]}
             >
-              <div className={styles.avatar} style={{ backgroundImage: `url(${teacher.photo})` }} />
+              <div className={styles.avatar} style={{ backgroundImage: `url('${teacher.photo}')` }} />
               <div className={styles.content}>
                 <div className={styles.name}>
                   {teacher.name}

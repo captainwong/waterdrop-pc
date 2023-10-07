@@ -36,7 +36,7 @@ export const Student = () => {
                 <div
                   className={styles.avatar}
                   style={{
-                    backgroundImage: `url(${student.avatar || 'http://water-drop-assets.oss-cn-hangzhou.aliyuncs.com/images/1675623073445.jpg'})`,
+                    backgroundImage: `url('${student.avatar || 'http://water-drop-assets.oss-cn-hangzhou.aliyuncs.com/images/1675623073445.jpg'}')`,
                   }}
                 />
               )}
