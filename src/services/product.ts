@@ -116,9 +116,6 @@ export const useLazyProducts = () => {
     pageCur?: number,
     pageSize?: number,
   ) => {
-    console.log('getProducts', {
-      name, category, pageCur, pageSize,
-    });
     const res = await get({
       variables: {
         name,

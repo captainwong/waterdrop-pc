@@ -1,28 +1,66 @@
 import { CREATE_SCHECULES, GET_SCHEDULES } from '@/graphql/schedule';
-import { TSchedulesQuery } from '@/types/schedule';
-import { DEFAULT_PAGE_SIZE } from '@/utils/constants';
-import { useMutation, useQuery } from '@apollo/client';
+import { ISchedule, TSchedulesQuery } from '@/types/schedule';
+import { useLazyQuery, useMutation } from '@apollo/client';
+import { useEffect, useRef, useState } from 'react';
+
+const DEFAULT_SCHEDULES_PER_PAGE = 50;
 
 export const useSchedules = (
   day: string,
-  page = 1,
-  pageSize = DEFAULT_PAGE_SIZE,
 ) => {
-  const { data, loading } = useQuery<TSchedulesQuery>(GET_SCHEDULES, {
-    variables: {
-      day,
-      page: { page, pageSize },
-    },
-  });
+  const pageCur = useRef(1);
+  const [schedules, setSchedules] = useState<ISchedule[]>([]);
+  const [hasMore, setHasMore] = useState(true);
+  const [get, { loading }] = useLazyQuery<TSchedulesQuery>(GET_SCHEDULES);
+
+  const getSchedules = async (pageNum = 1) => {
+    const res = await get({
+      fetchPolicy: 'no-cache',
+      variables: {
+        day,
+        page: {
+          page: pageNum,
+          pageSize: DEFAULT_SCHEDULES_PER_PAGE,
+        },
+      },
+    });
+    const more = (res.data?.getSchedules.page &&
+      (
+        (res.data.getSchedules.page.page * DEFAULT_SCHEDULES_PER_PAGE)
+        < res.data.getSchedules.page.total
+      )
+    ) || false;
+    return {
+      ss: res.data?.getSchedules.data || [],
+      more,
+    };
+  };
+
+  const refreshSchedules = async () => {
+    pageCur.current = 1;
+    const res = await getSchedules();
+    setSchedules(res.ss);
+    setHasMore(res.more);
+  };
+
+  const loadMoreSchedules = async () => {
+    if (!hasMore) return;
+    const { ss, more } = await getSchedules(pageCur.current + 1);
+    setHasMore(more);
+    setSchedules((prev) => [...prev, ...ss]);
+    pageCur.current += 1;
+  };
+
+  useEffect(() => {
+    refreshSchedules();
+  }, [day]);
 
   return {
     loading,
-    schedules: data?.getSchedules.data || [],
-    pagination: data?.getSchedules.page || {
-      total: 0,
-      pageSize,
-      page,
-    },
+    hasMore,
+    schedules,
+    refreshSchedules,
+    loadMoreSchedules,
   };
 };
 
