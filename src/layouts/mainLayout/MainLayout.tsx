@@ -4,7 +4,7 @@ import { Dropdown, Tooltip } from 'antd';
 import { LogoutOutlined, ShopOutlined, UserOutlined } from '@ant-design/icons';
 import { Link, useNavigate, useOutlet } from 'react-router-dom';
 import { ROUTES, ROUTE_KEYS } from '@/routes/menu';
-import { AUTH_TOKEN } from '@/utils/constants';
+import { AUTH_TOKEN, LOCAL_STORAGE_KEY_CUR_ORG } from '@/utils/constants';
 import { useGoTo, useIsCurrentRouteOrganization } from '@/hooks';
 import { OrganizationSelect } from '@/components/orgSelect/OrganizationSelect';
 import logo from '../../assets/henglogo@2x.png';
@@ -23,6 +23,7 @@ export const MainLayout = () => {
   const logout = () => {
     sessionStorage.removeItem(AUTH_TOKEN);
     localStorage.removeItem(AUTH_TOKEN);
+    localStorage.removeItem(LOCAL_STORAGE_KEY_CUR_ORG);
     navigate('/login');
   };
 
