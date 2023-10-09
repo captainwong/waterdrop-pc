@@ -42,6 +42,15 @@ export const GET_SCHEDULES = gql`
           id
           name
         }
+        studentSchedules{
+          id
+          status
+          student{
+            id
+            name
+            avatar
+          }
+        }
       }
     }
   }

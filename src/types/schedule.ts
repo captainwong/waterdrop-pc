@@ -1,6 +1,7 @@
 import { ICourse } from './course';
 import { TGraphqlQuery } from './graphql';
 import { IOrganization } from './organization';
+import { IStudentSchedule } from './student-schedule';
 import { ITeacher } from './teacher';
 
 export interface ISchedule {
@@ -11,6 +12,7 @@ export interface ISchedule {
   course: ICourse;
   teacher: ITeacher;
   organization: IOrganization;
+  studentSchedules: IStudentSchedule[];
 }
 
 export type TScheduleQuery = TGraphqlQuery<ISchedule>;

@@ -1,7 +1,8 @@
 import { useSchedules } from '@/services/schedule';
 import {
-  Avatar, Button, Descriptions, Divider, Result, Space, Spin, Steps,
+  Avatar, Button, Descriptions, Divider, Result, Space, Spin, Steps, Tooltip,
 } from 'antd';
+import { StudentScheduleStatus } from '@/types/student-schedule';
 import styles from './schedule.module.less';
 
 interface IProps {
@@ -43,6 +44,33 @@ export const Schedule = ({ day }: IProps) => {
                             ))
                           }
                         </Space>
+                      </Descriptions.Item>
+                      <Descriptions.Item
+                        span={3}
+                        label={`学员(${schedule.studentSchedules.length})`}
+                        labelStyle={{ width: 80 }}
+                      >
+                        {
+                          schedule.studentSchedules.length === 0 && '暂无学员预约'
+                        }
+                        <Avatar.Group
+                          maxCount={10}
+                          maxStyle={{ color: '#f56a00', backgroundColor: '#fde3cf' }}
+                        >
+                          {
+                            schedule.studentSchedules.map((ss) => (
+                              <Tooltip
+                                key={ss.id}
+                                title={ss.student.name + (ss.status === StudentScheduleStatus.CANCELED ? '已取消' : '')}
+                              >
+                                <Avatar
+                                  key={ss.student.id}
+                                  src={ss.student.avatar}
+                                />
+                              </Tooltip>
+                            ))
+                          }
+                        </Avatar.Group>
                       </Descriptions.Item>
                     </Descriptions>
                   ),
